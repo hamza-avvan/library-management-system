@@ -21,7 +21,7 @@ FLASK_APP=app.py
 FLASK_ENV=development
 FLASK_DEBUG=True
 
-# FB info
+# DB info
 MYSQL_HOST=localhost
 MYSQL_USER=root
 MYSQL_PASSWORD=
