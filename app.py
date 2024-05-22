@@ -1,4 +1,4 @@
-from flask import Flask, g, escape, session, redirect, render_template, request, jsonify, Response
+from flask import Flask
 from Misc.functions import *
 
 app = Flask(__name__)
