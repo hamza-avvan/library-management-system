@@ -1,10 +1,3 @@
-# DB service
-FROM mysql:5.7
-ADD db/lms.sql /docker-entrypoint-initdb.d/
-
-EXPOSE 3306
-
-# app service
 FROM python:3.9-slim
 
 ARG USER=webmin
@@ -22,5 +15,7 @@ WORKDIR /app
 COPY . .
 
 RUN pip install --no-cache-dir -r requirements.txt
+
 EXPOSE 5000
+
 CMD ["flask", "run", "--host=0.0.0.0"]
