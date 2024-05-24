@@ -104,3 +104,25 @@ h1, h2, h3, h4 {
     opacity: 0.9;
 	box-shadow: 0px 0px 7px -5px #534d4d;
 }
+
+.action-btn-wrapper {
+	position: absolute;
+	right: 0;
+}
+
+.action-btn-wrapper form {
+	display: block !important;
+	overflow: auto;
+    margin-bottom: 5px;
+}
+
+.disabled {
+	/* cursor: not-allowed; */
+}
+
+.share-link {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+    font-size: 20px;
+}

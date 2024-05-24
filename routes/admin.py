@@ -63,8 +63,19 @@ def users_view():
 	admin = admin_manager.get(id)
 	myusers = admin_manager.getUsersList()
 
-	return render_template('users.html', g=g, admin=admin, users=myusers)
+	return render_template('user/index.html', g=g, admin=admin, users=myusers)
 
+@admin_view.route('/users/view/<int:uid>', methods=['GET'])
+@admin_manager.admin.login_required
+def view_user(uid):
+	admin_manager.admin.set_session(session, g)
+
+	id = int(admin_manager.admin.uid())
+	admin = admin_manager.get(id)
+	user = user_manager.get(uid)
+	user_books = user_manager.getBooksList(uid)
+
+	return render_template('user/view.html', g=g, books=user_books, user=user, admin=admin)
 
 
 @admin_view.route('/books/', methods=['GET'])

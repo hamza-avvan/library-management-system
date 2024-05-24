@@ -1,4 +1,4 @@
-{%extends "/shared/layout.html" %}
+{%extends "/shared/admin_layout.html" %}
 
 {% block title %}Profile - {{user['name']}} {% endblock %}
 
@@ -46,6 +46,7 @@
 							<li class="nav-item">
 							  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
 							</li>
+							<a href="javascript:;" class="share-link"><i class="bi bi-link-45deg"></i></button></a>
 						  </ul>
 
 						  <div class="col-md-12 ">
@@ -97,37 +98,40 @@
 										<h4 class="text-center mt-4">Manage Account</h4>
 										<p class="text-center mb-4">One Account For Everything</p>
 
-										<form method="POST" action="/user">
-											<div class="row">
-												<div class="col-sm-12">
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="form-group">
+													<label for="inputFirstName" class="form-label">Your Name</label>
+													<input type="text" disabled placeholder="Enter Your Name" name="name" value="{{user['name']}}" class="form-control" id="inputFirstName">
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group">
+												<label for="inputEmail3" class="form-label">Email</label>
+												<input type="email" disabled placeholder="Email" value="{{user['email']}}" name="email" class="form-control disabled" id="inputEmail3">
+												</div>
+											</div>
+											<div class="col-sm-6">
 													<div class="form-group">
-														<label for="inputFirstName" class="form-label">Your Name</label>
-														<input type="text" placeholder="Enter Your Name" name="name" value="{{user['name']}}" class="form-control" id="inputFirstName">
-													</div>
+													<label for="password" class="form-label">Password</label>
+													<input type="password" disabled placeholder="Password" class="form-control" id="password" name="password">
 												</div>
 											</div>
-											<div class="row">
-												<div class="col-sm-6">
-													<div class="form-group">
-													<label for="inputEmail3" class="form-label">Email</label>
-													<input type="email" placeholder="Email" value="{{user['email']}}" name="email" class="form-control" id="inputEmail3">
-													</div>
-												</div>
-												<div class="col-sm-6">
-														<div class="form-group">
-														<label for="password" class="form-label">Password</label>
-														<input type="password" placeholder="Password" class="form-control" id="password" name="password">
-													</div>
-												</div>
-											</div>
-											<div class="form-group">
-												<label for="inpBio" class="form-label">Bio</label>
-												<textarea class="form-control" rows="3" name="bio" id="inpBio">{{user['bio']}}</textarea>
-											</div>
-											<div class="form-group">
-												<button type="submit" class="btn btn-block btn-primary">Save Changes</button>
-											</div>
-										</form>	
+										</div>
+										<div class="form-group">
+											<label for="inpBio" class="form-label">Bio</label>
+											<textarea class="form-control" disabled rows="3" name="bio" id="inpBio">{{user['bio']}}</textarea>
+										</div>
+										<div class="form-group">
+											<form method="POST" action="/admin/user/disable/{{user['id']}}">
+												<button class="col-md-6 btn btn-outline-warning float-right">Disable <i class="bi bi-x-lg"></i></button>
+											</form>
+											<form method="POST" action="/admin/user/delete/{{user['id']}}">
+												<button class="col-md-6 btn btn-outline-danger float-right">Delete <i class="bi bi-trash"></i></button>
+											</form>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -140,18 +144,35 @@
         </div>
 	</div>
 
-	<script>
-		var hash;
-		$(".nav-tabs a").on("click", function() {
-			hash = $(this).attr('aria-controls');
-			window.location.hash = hash;
-		})
+<script>
+	var hash;
+	$(".nav-tabs a").on("click", function() {
+		hash = $(this).attr('aria-controls');
+		if (hash) window.location.hash = hash;
+	})
+
+	hash = window.location.hash;
+
+	if (hash=='#profile') {
+		$(".nav-tabs a").toggleClass('active').toggleClass('show');
+		$(".tab-pane").toggleClass('active').toggleClass('show');
+	}
+
+	var copied;
+	$('.share-link').on('click', function () {
+		window.navigator.clipboard.writeText(location.href);
+
 	
-		hash = window.location.hash;
-	
-		if (hash=='#profile') {
-			$(".nav-tabs a").toggleClass('active').toggleClass('show');
-			$(".tab-pane").toggleClass('active').toggleClass('show');
+		if (!copied) {
+			$('.share-link i').toggleClass('bi-link-45deg').addClass('bi-check2');
+
+			setTimeout(function() {
+				$('.share-link i').toggleClass('bi-link-45deg').toggleClass('bi-check2');
+				copied = false;
+			}, 1000)
 		}
-	</script>
+
+		copied = true
+	})
+</script>
 {% endblock %}

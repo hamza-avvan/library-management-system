@@ -3,7 +3,7 @@ version: '3.8'
 services:
   mysql:
     container_name: lms-db
-    image: mysql:latest
+    image: mysql:8.4
     volumes:
       - db-data:/var/lib/mysql
       - ./db/lms.sql:/docker-entrypoint-initdb.d/lms.sql

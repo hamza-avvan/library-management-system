@@ -12,13 +12,13 @@
 			{% if users %}
 				{% for user in users %}
 					<div class="list-group">
-					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+					  <a href="/admin/users/view/{{user['id']}}" class="list-group-item list-group-item-action flex-column align-items-start">
 					    <div class="d-flex w-100 justify-content-between">
 							<div>
 								<img src="https://api.dicebear.com/8.x/adventurer-neutral/png?size=72&seed={{user['name']}}&scale=110&radius=50&backgroundColor=763900,9e5622,ecad80,f2d3b1,d1d4f9,c0aede,b6e3f4,ffd5dc,ffdfbf&backgroundType=solid,gradientLinear"  style="height: auto !important;">
 							</div>
 							<div class="col-md-11">
-								<h5 class="mb-1">{{user['name']}}</h5>
+								<h5 class="mb-1 link">{{user['name']}}</h5>
 								<div class="action-btn-wrapper">
 									<form style="display: inline;" method="POST" action="../delete/{{user['id']}}"><button style="border-radius: 100%; padding: 10px;" class="btn btn-outline-danger float-right"><i class="bi bi-trash"></i></button></form>
 									<form style="display: inline;" method="POST" action="../disable/{{user['id']}}"><button style="border-radius: 100%; padding: 10px;" class="btn btn-outline-secondary float-right"><i class="bi bi-x-lg"></i></button></form>
@@ -29,7 +29,9 @@
 							</div>
 						</div>
 					    <small>{{ "Locked" if user['lock']>0 else ""}}</small>
-					    <small class="float-right">{{ ago(user['created_at']) }}</small>
+					    <small class="float-right"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-activity" viewBox="0 0 16 16">
+							<path fill-rule="evenodd" d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z"/>
+						  </svg> {{ ago(user['created_at']) }}</small>
 					  </a>
 					</div>
 				{% endfor %}
