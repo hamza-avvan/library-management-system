@@ -16,7 +16,7 @@
 			<div style="width:90%">
 			{% if msg %}
 				<div class="alert alert-success">
-					{{msg}}
+					{{msg|safe}}
 				</div>
 			{% endif %}
 			{% if error %}

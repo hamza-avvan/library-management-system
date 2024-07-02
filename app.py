@@ -6,8 +6,10 @@ app.secret_key = '#$ab9&^BB00_.'
 
 # Setting DAO Class
 from Models.DAO import DAO
+from Models.Mailer import Mailer
 
 DAO = DAO(app)
+mailer = Mailer(app)
 
 # Registering blueprints
 from routes.user import user_view

@@ -1,6 +1,9 @@
 from flask import Blueprint, g, escape, session, redirect, render_template, request, jsonify, Response, flash
-from app import DAO
+from app import DAO, mailer
 from Misc.functions import *
+from threading import Thread
+
+from flask_mail import Mail
 
 from Controllers.UserManager import UserManager
 
@@ -17,6 +20,33 @@ def home():
 
 	return render_template('home.html', g=g)
 
+@user_view.route('/email', methods=['GET'])
+def testemail():
+	msg = mailer.message(
+        "Verify Your Email",
+        ["reciever@example.com"]
+    )
+
+	msg.html = render_template('email/verification-code.html', domain=request.url_root, code=123)
+	mailer.send_async_email(msg)
+	# mailer.mail.send(msg)
+	
+# 	user_manager.update_freely({"code": str("asas")}, 1)
+# 	code = generate_secure_verification_code('asas')
+# 	return code
+	return render_template('email/verification-code.html', domain=request.url_root, code=123)
+
+@user_view.route('/verify/<code>', methods=['GET'])
+def verifyUser(code):
+	user = user_manager.getUserByCode(code)
+
+	if user:
+		user_manager.update_freely({"verify": 1}, user['id'])
+	
+		flash('User verification successful!')
+		return redirect("/user/")
+
+	return render_template('signin.html', error="Invalid verification code")
 
 @user_view.route('/signin', methods=['GET', 'POST'])
 @user_manager.user.redirect_if_login
@@ -30,6 +60,9 @@ def signin():
 			return render_template('signin.html', error="Email and password are required")
 
 		d = user_manager.signin(email, hash(password))
+
+		if d=="unverify":
+			return render_template('signin.html', error="Please verify before signing in.")
 
 		if d and len(d)>0:
 			session['user'] = int(d['id'])
@@ -58,9 +91,18 @@ def signup():
 		if new_user == "already_exists":
 			return render_template('signup.html', error="User already exists with this email")
 
+		code = generate_secure_verification_code(email)
+		print(code)
+		user_manager.update_freely({"code": code}, new_user['id'])
 
-		return render_template('signup.html', msg = "You've been registered!")
+		msg = mailer.message(
+			"Verify Your Email",
+			[email]
+		)
+		msg.html = render_template('email/verification-code.html', domain=request.url_root, code=code, name=name)
+		mailer.send_async_email(msg)
 
+		return render_template('signup.html', msg = "You've been registered! Please check your inbox or <b>spam</b>.")
 
 	return render_template('signup.html')
 

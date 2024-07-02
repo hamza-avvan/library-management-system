@@ -1,4 +1,4 @@
-import os
+import os, json
 from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
 from Misc.functions import *
@@ -22,6 +22,9 @@ class DB(object):
 		# 	run_command("mysql -h {} -u{} -p{} {} -e \"\"".format(self.host, self.user, self.password, self.db))
 		# except:
 		# 	print("Error")
+	
+	def escape_quotes(self, string):
+		return json.dumps(string)
 
 	def cur(self):
 		return self.mysql.get_db().cursor()

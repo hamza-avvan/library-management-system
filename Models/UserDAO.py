@@ -9,6 +9,25 @@ class UserDAO():
 
 		return users
 
+	def get(self, filters):
+		query = "SELECT * FROM @table WHERE "
+		conditions = []
+		values = []
+		
+		for key, value in filters.items():
+			conditions.append("{} = {}".format(key, self.db.escape_quotes(value)))
+			values.append(value)
+		
+		query += " AND ".join(conditions)
+		
+		# Execute the query
+		q = self.db.query(query)
+		
+		# Fetch the result
+		user = q.fetchone()
+
+		return user
+
 	def getById(self, id):
 		q = self.db.query("select * from @table where id='{}'".format(id))
 
@@ -30,6 +49,13 @@ class UserDAO():
 
 		return user
 
+	def last_insert_id(self):
+		q = self.db.query("select LAST_INSERT_ID() as id")
+
+		user = q.fetchone()
+
+		return user
+
 	def add(self, user):
 		name = user['name']
 		email = user['email']
@@ -40,14 +66,19 @@ class UserDAO():
 		
 		return q
 
+	def update(self, userinfo, _id):
+		# Extract keys and values from the user dictionary
+		keys = list(userinfo.keys())
 
-	def update(self, user, _id):
-		name = user['name']
-		email = user['email']
-		password = user['password']
-		bio = user['bio']
+		
+		# Create the SET part of the query dynamically
+		set_clause = ", ".join([f"{key} = {self.db.escape_quotes(userinfo[key])}" for key in keys])
+		
+		# Construct the SQL query with the provided table name
+		query = f"UPDATE @table SET {set_clause} WHERE id = {self.db.escape_quotes(_id)}"
 
-		q = self.db.query("UPDATE @table SET name = '{}', email='{}', password='{}', bio='{}' WHERE id={}".format(name, email, password, bio, _id))
+		# Execute the query
+		q = self.db.query(query)
 		self.db.commit()
 		
 		return q

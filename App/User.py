@@ -4,6 +4,7 @@ class User(Actor):
 	id = 0
 	name = ""
 	lock = False
+	code = ""
 
 	user = {}
 

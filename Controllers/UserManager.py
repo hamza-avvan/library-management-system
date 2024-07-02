@@ -20,6 +20,9 @@ class UserManager():
 		user_pass = user['password'] # user pass at 
 		if user_pass != password:
 			return False
+		
+		if user['verify'] != 1:
+			return "unverify"
 
 		return user
 
@@ -28,6 +31,11 @@ class UserManager():
 		
 	def get(self, id):
 		user = self.dao.getById(id)
+
+		return user
+
+	def getUserByCode(self, code):
+		user = self.dao.get({"code": code})
 
 		return user
 
@@ -41,17 +49,27 @@ class UserManager():
 		
 		new_user = self.dao.add(user_info)
 
-		return new_user
+		return self.dao.last_insert_id()
 		
 	def get(self, id):
 		user = self.dao.getById(id)
 
 		return user
-		
+	
+	def verify(self, id):
+		user = self.dao.update({'verify', 1}, id)
+
+		return user
+
+	def update_freely(self, user_info, id):
+		user = self.dao.update(user_info, id)
+
+		return user
+
 	def update(self, name, email, password, bio, id):
 		user_info = {"name": name, "email": email, "password": password, "bio":bio}
 		
-		user = self.dao.update(user_info, id)
+		user = self.update_freely(user_info, id)
 
 		return user
 

@@ -17,7 +17,7 @@ def home(id):
 	user_books = []
 	if user_manager.user.isLoggedIn():
 		reserved_books = book_manager.getReserverdBooksByUser(user_id=user_manager.user.uid())
-		user_books = reserved_books.get('user_books', '').split(',') if reserved_books else []
+		user_books = reserved_books.get('user_books', '').split(',') if reserved_books.get('user_books', '') else []
 
 	if id is not None:
 		b = book_manager.getBook(id)
@@ -38,7 +38,7 @@ def mybooks():
 
 	user_books = []
 	reserved_books = book_manager.getReserverdBooksByUser(user_id=user_manager.user.uid())
-	user_books = reserved_books.get('user_books', '').split(',') if reserved_books else []
+	user_books = reserved_books.get('user_books', '').split(',') if reserved_books.get('user_books', '') is not None else []
 	b = book_manager.getUserBooks(user_manager.user.uid())
 
 	if not b:

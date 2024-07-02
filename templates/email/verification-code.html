@@ -1,0 +1,77 @@
+{%extends "/email/layout.html" %}
+
+
+{% block content %}
+
+<style>
+    mybtn {
+        display: inline-block;
+        font-weight: 400;
+        color: #fff;
+        text-align: center;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-color: transparent;
+        border: 1px solid transparent;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: .25rem;
+        transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        color: #fff;
+        background-color: #0069d9;
+        border-color: #0062cc;
+    }
+
+    mybtn:hover {
+        color: #fff;
+        background-color: #0069d9;
+        border-color: #0062cc;
+    }
+
+
+</style>
+
+<div class="container">
+    <p>Dear {{name}},</p>
+    
+    <p>Welcome aboard! We're thrilled to have you join our amazing online community. 🥳</p>
+    
+    <p>To complete your registration, please click the button below to verify your email. Don't worry, we promise it won't self-destruct! 😄</p>
+
+    <a style="display: inline-block;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    text-decoration: auto;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    color: #fff;
+    background-color: #0069d9;
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+    width: 100px;
+    border-color: #0062cc;" class=" mybtn mb-3" href='{{domain}}verify/{{code}}'>Verify</a>
+
+    <p style="text-align: center;"><small>If the button doesn't work please click on this link: <a class="" href='{{domain}}verify/{{code}}'>{{domain}}verify/{{code}}</a></small></p>
+
+    <p>Happy Hunting,<br/>
+    Hamza<br/>
+    Library Management System</p>
+</div>
+
+{% endblock %}
