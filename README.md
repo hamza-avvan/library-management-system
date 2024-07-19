@@ -28,8 +28,26 @@ MYSQL_PASSWORD=
 MYSQL_DB=lms
 ```
 
+**Note:** If you update the `MYSQL_DB` variable, remember to also update the corresponding value in the [docker-compose.yaml](https://github.com/hamza-avvan/library-management-system/blob/master/docker-compose.yaml#L12) file to ensure consistency when using Docker. There's an exceptioin for `MYSQL_HOST` which should set set within [docker-compose.yaml](https://github.com/hamza-avvan/library-management-system/blob/master/docker-compose.yaml#L29) file explicitly.
+
+To setup a mail server you can set the below variable in `.env` file. 
+```bash
+# SMTP credentials
+MAIL_SERVER=smtp.gmail.com
+MAIL_PORT=587 
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_USE_TLS=True
+MAIL_USE_SSL=
+MAIL_DEBUG=1
+MAIL_DEFAULT_SENDER=sender@domain.com
+```
+
+I'm using Flask-Mail for managing emails. For more information, visit [https://flask-mail.readthedocs.io/en/latest/](https://flask-mail.readthedocs.io/en/latest/)
+
+
 ## Setup Datbase
-Export `lms.sql` database from within [db](https://github.com/hamza-avvan/library-management-system/tree/master/db) directory using Phpmyadmin or terminal
+Export `lms.sql` database from within [db](https://github.com/hamza-avvan/library-management-system/tree/master/db) directory using Phpmyadmin or terminal:
 
 ```bash
 mysql -u <username> -p <password> lms < lms.sql
@@ -45,6 +63,8 @@ Or run this command
 python -m flask run
 ```
 
+### Debugging
+
 Start flask with auto reload on code change
 ```bash
 flask run --reload
@@ -52,7 +72,9 @@ flask run --reload
 ---------------------
 
 # Getting Started with Docker
-With this update, you can now easily get started with out-of-the-box support for a Docker environment. There's no need to set up a mysql service, import databases, or run multiple commands. Simply execute the `docker-compose` command, and it will handle everything for you.
+With this update, you can now easily get an out-of-the-box support for a Docker environment. There's no need to set up a mysql service, import databases, or run multiple commands. 
+
+Create an `.env` file as described in the [Set Environment Variables](https://github.com/hamza-avvan/library-management-system?tab=readme-ov-file#set-environment-variables) section, then execute the `docker-compose` command. This will automate the entire setup process for you.
 
 Build & start the app:
 ```bash

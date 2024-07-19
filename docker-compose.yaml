@@ -24,11 +24,9 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./:/app
+    env_file: .env # using .env file to load the environment variables except for MYSQL_HOST
     environment:
       MYSQL_HOST: mysql
-      MYSQL_USER: root
-      MYSQL_PASSWORD:
-      MYSQL_DB: lms
     depends_on:
       - mysql
 
