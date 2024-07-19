@@ -24,6 +24,7 @@ class UserManager():
 		if user['verify'] != 1:
 			return "unverify"
 
+		self.user.set(user)
 		return user
 
 	def signout(self):
@@ -53,6 +54,11 @@ class UserManager():
 		
 	def get(self, id):
 		user = self.dao.getById(id)
+
+		return user
+		
+	def deleteUserByEmail(self, email):
+		user = self.dao.delete({'email': email})
 
 		return user
 	

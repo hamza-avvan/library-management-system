@@ -17,6 +17,13 @@ h1, h2, h3, h4 {
     -webkit-font-smoothing: antialiased;
 }
 
+.bi {
+    width: 1em;
+    height: 1em;
+    vertical-align: -.125em;
+    fill: currentcolor;
+}
+
 .home {
 	background-image: url("/static/images/bg.jpg");
 	background-repeat: no-repeat;

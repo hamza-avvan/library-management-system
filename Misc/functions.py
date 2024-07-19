@@ -1,4 +1,15 @@
-import os, hashlib, binascii, timeago, datetime, subprocess
+import os, hashlib, binascii, timeago, datetime, subprocess, json, base64
+from cryptography.fernet import Fernet
+
+secret_key = os.environ.get('SECRET_KEY')
+key = base64.urlsafe_b64encode(hashlib.sha256(secret_key.encode()).digest()[:32])
+fernet = Fernet(key)
+
+def encrypt(value):
+    return fernet.encrypt(value.encode())
+
+def decrypt(token):
+    return fernet.decrypt(token)
 
 salt=b'$#0x--.\'/\\98'
 def hash(string):
@@ -35,3 +46,7 @@ def generate_secure_verification_code(uid, length=64):
     # Ensure the verification code is alphanumeric
     verification_code = ''.join([c for c in hash_digest if c.isalnum()][:length])
     return verification_code
+
+def create_headline(msg, msg_type, icon, raw=False):
+    headline = {'msg': msg, 'msg_type': msg_type, 'icon': icon}
+    return json.dumps(headline) if raw else headline

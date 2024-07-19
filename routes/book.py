@@ -1,5 +1,6 @@
 from flask import Blueprint, g, escape, session, redirect, render_template, request, jsonify, Response
 from app import DAO
+from Misc.functions import *
 
 from Controllers.UserManager import UserManager
 from Controllers.BookManager import BookManager
@@ -8,6 +9,15 @@ book_view = Blueprint('book_routes', __name__, template_folder='/templates')
 
 book_manager = BookManager(DAO)
 user_manager = UserManager(DAO)
+
+
+# Middleware
+@book_view.before_request
+def before_request():
+    # Retrieve the cookie and store it in the g object
+	if request.cookies.get('headline') is not None:
+		g.headline = create_headline(request.cookies.get('headline'), "warning", "exclamation-triangle-fill")
+
 
 @book_view.route('/books/', defaults={'id': None})
 @book_view.route('/books/<int:id>')

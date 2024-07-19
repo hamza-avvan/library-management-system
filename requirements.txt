@@ -3,3 +3,4 @@ Werkzeug==2.2.2
 flask-mysql==1.5.2
 timeago==1.0.15
 Flask-Mail
+cryptography

@@ -5,6 +5,7 @@ from threading import Thread
 
 class Mailer(object):
     """Initialize smtp service """
+    ENABLE_MAILER = bool(os.environ.get('ENABLE_MAILER')) or False
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
     MAIL_PORT = os.environ.get('MAIL_PORT')
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
@@ -29,8 +30,11 @@ class Mailer(object):
     
     
     def exec_email(self, msg):
+        if not self.ENABLE_MAILER:
+            return
+
         with self.app.app_context():
-            self.mail.send(msg)
+                self.mail.send(msg)
 
     def send_async_email(self, msg):
         thr = Thread(target=self.exec_email, args=[msg])

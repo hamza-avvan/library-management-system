@@ -1,4 +1,5 @@
-from flask import Blueprint, g, escape, session, redirect, render_template, request, jsonify, Response, flash
+import time
+from flask import Blueprint, g, escape, session, redirect, render_template, request, jsonify, make_response, flash
 from app import DAO, mailer
 from Misc.functions import *
 from threading import Thread
@@ -11,12 +12,19 @@ user_view = Blueprint('user_routes', __name__, template_folder='/templates')
 
 user_manager = UserManager(DAO)
 
+# Middleware
+@user_view.before_request
+def before_request():
+    # Retrieve the cookie and store it in the g object
+	if request.cookies.get('headline') is not None:
+		g.headline = create_headline(request.cookies.get('headline'), "warning", "exclamation-triangle-fill")
+
+
 @user_view.route('/', methods=['GET'])
 def home():
 	g.bg = 1
 
 	user_manager.user.set_session(session, g)
-	print(g.user)
 
 	return render_template('home.html', g=g)
 
@@ -59,15 +67,17 @@ def signin():
 		if len(email)<1 or len(password)<1:
 			return render_template('signin.html', error="Email and password are required")
 
-		d = user_manager.signin(email, hash(password))
+		user = user_manager.signin(email, hash(password))
 
-		if d=="unverify":
+		if user=="unverify":
 			return render_template('signin.html', error="Please verify before signing in.")
 
-		if d and len(d)>0:
-			session['user'] = int(d['id'])
+		if user and len(user)>0:
+			session['user'] = int(user['id'])
 
-			return redirect("/")
+			resp = make_response(redirect('/'))
+
+			return resp
 
 		return render_template('signin.html', error="Email or password incorrect")
 
@@ -92,7 +102,6 @@ def signup():
 			return render_template('signup.html', error="User already exists with this email")
 
 		code = generate_secure_verification_code(email)
-		print(code)
 		user_manager.update_freely({"code": code}, new_user['id'])
 
 		msg = mailer.message(
@@ -112,7 +121,9 @@ def signup():
 def signout():
 	user_manager.signout()
 
-	return redirect("/", code=302)
+	resp = make_response(redirect("/", code=302))
+	
+	return resp
 
 @user_view.route('/user/', methods=['GET'])
 @user_manager.user.login_required

@@ -1,8 +1,9 @@
+import os
 from flask import Flask
 from Misc.functions import *
 
 app = Flask(__name__)
-app.secret_key = '#$ab9&^BB00_.'
+app.secret_key = os.environ.get('SECRET_KEY')
 
 # Setting DAO Class
 from Models.DAO import DAO

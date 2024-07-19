@@ -65,6 +65,22 @@ class UserDAO():
 		self.db.commit()
 		
 		return q
+	
+	def delete(self, conditions):
+		# Extract keys and values from the conditions dictionary
+		keys = list(conditions.keys())
+
+		# Create the WHERE part of the query dynamically
+		where_clause = " AND ".join([f"{key} = {self.db.escape_quotes(conditions[key])}" for key in keys])
+
+		# Construct the SQL query with the provided table name
+		query = f"DELETE FROM @table WHERE {where_clause}"
+
+		# Execute the query
+		q = self.db.query(query)
+		self.db.commit()
+
+		return q
 
 	def update(self, userinfo, _id):
 		# Extract keys and values from the user dictionary
