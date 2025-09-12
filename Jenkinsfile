@@ -11,6 +11,8 @@ pipeline {
             steps {
                 echo "Code Clone Stage"
                 git url: "https://github.com/rakshitmalik136/library-management-system-.git", branch: "master"
+		sh "ls -la"   // <-- add this
+        	sh "cat .env || echo '.env missing!'"
             }
         }
         
@@ -61,8 +63,8 @@ pipeline {
                 echo "Deploying Application"
                 script {
                     sh '''
-                        docker compose down || true
-                        docker compose up -d --build
+                        docker compose --env-file .env down || echo "No running containers to stop"
+    			docker compose --env-file .env up -d --build
 
                         echo "Waiting for app to start..."
                         sleep 15
