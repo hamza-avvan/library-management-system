@@ -15,7 +15,7 @@ services:
 
   app:
     container_name: lms
-    image: rakshitmalik136/library-management-system:latest   # use your pushed image
+    image: rakshitmalik136/library-management-system:latest   
     build:
       context: .
       dockerfile: Dockerfile
@@ -29,7 +29,7 @@ services:
       MYSQL_DATABASE: lms
     depends_on:
       - mysql
-    command: python app.py   # or the correct entrypoint for your Flask app
+    command: python app.py   # or the correct entrypoint for the Flask app
 
 volumes:
   db-data:
