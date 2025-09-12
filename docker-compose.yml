@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mysql:
+    container_name: lms-db
+    image: mysql:8.4
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./db/lms.sql:/docker-entrypoint-initdb.d/lms.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: cm9vdDEyMwo=  #base64 --> root123     
+      MYSQL_DATABASE: lms
+      MYSQL_USER: lmsuser
+      MYSQL_PASSWORD: lms123
+
+  app:
+    container_name: lms
+    image: rakshitmalik136/library-management-system:latest   # use your pushed image
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    env_file: .env
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: lmsuser
+      MYSQL_PASSWORD: lms123
+      MYSQL_DATABASE: lms
+    depends_on:
+      - mysql
+    command: python app.py   # or the correct entrypoint for your Flask app
+
+volumes:
+  db-data:
+
