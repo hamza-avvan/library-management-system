@@ -62,6 +62,13 @@ pipeline {
             steps {
                 echo "Deploying Application"
                 script {
+		
+		    sh '''
+		    	docker rm -f lms-db || true
+			docker compose --env-file .env down
+			docker compose --env-file .env up -d --build
+		    '''
+
                     sh '''
                         docker compose --env-file .env down || echo "No running containers to stop"
     			docker compose --env-file .env up -d --build
