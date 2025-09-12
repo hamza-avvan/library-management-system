@@ -1,4 +1,4 @@
-pipeline{ 
+pipeline { 
     agent any
     
     environment {
@@ -6,16 +6,16 @@ pipeline{
         DOCKER_TAG = "${BUILD_NUMBER}"
     }
     
-    stages{
-        stage("Code Clone"){
-            steps{
+    stages {
+        stage("Code Clone") {
+            steps {
                 echo "Code Clone Stage"
                 git url: "https://github.com/rakshitmalik136/library-management-system-.git", branch: "master"
             }
         }
         
-        stage("Code Build & Test"){
-            steps{
+        stage("Code Build & Test") {
+            steps {
                 echo "Code Build Stage"
                 script {
                     // Build with both versioned and latest tags
@@ -24,8 +24,8 @@ pipeline{
             }
         }
         
-        stage("Basic Tests"){
-            steps{
+        stage("Basic Tests") {
+            steps {
                 echo "Running Basic Tests"
                 script {
                     // Test if the container runs without errors
@@ -34,13 +34,13 @@ pipeline{
             }
         }
         
-        stage("Push To DockerHub"){
-            steps{
+        stage("Push To DockerHub") {
+            steps {
                 echo "Pushing to DockerHub"
                 withCredentials([usernamePassword(
                     credentialsId:"dockerHubCreds",
                     usernameVariable:"dockerHubUser",
-                    passwordVariable:"dockerHubPass")]){
+                    passwordVariable:"dockerHubPass")]) {
                     
                     script {
                         sh 'echo $dockerHubPass | docker login -u $dockerHubUser --password-stdin'
@@ -56,41 +56,25 @@ pipeline{
             }
         }
         
-        stage("Deploy"){
-            steps{
+        stage("Deploy") {
+            steps {
                 echo "Deploying Application"
                 script {
-                    // Ensure .env file exists
                     sh '''
-                        if [ ! -f .env ]; then
-                            echo "Warning: .env file not found. Creating a basic one..."
-                            cp .env.example .env || echo "Please ensure .env file is configured properly"
-                        fi
-                    '''
-                    
-                    // Deploy with better error handling
-                    sh '''
-                        docker compose down || echo "No running containers to stop"
+                        docker compose down || true
                         docker compose up -d --build
-                    '''
-                    
-                    // Verify deployment
-                    sh '''
-                        sleep 10
-                        if docker compose ps | grep -q "Up"; then
-                            echo "Deployment successful!"
-                        else
-                            echo "Deployment may have issues. Check logs:"
-                            docker compose logs
-                            exit 1
-                        fi
+
+                        echo "Waiting for app to start..."
+                        sleep 15
+
+                        docker exec lms ls -la /app/templates/ || (echo "Deployment failed"; exit 1)
                     '''
                 }
             }
         }
         
-        stage("Cleanup"){
-            steps{
+        stage("Cleanup") {
+            steps {
                 echo "Cleaning up unused Docker resources"
                 script {
                     sh '''
@@ -125,3 +109,4 @@ pipeline{
         }
     }
 }
+
