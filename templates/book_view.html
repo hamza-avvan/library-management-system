@@ -18,7 +18,7 @@
             <div style="width: 90%; display: inline-block;">
             <input type="search" name="keyword" autofocus class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{keyword}}" placeholder="Search for books...">
             </div>
-            <button type="submit" style="margin-left: 5px;" class="btn btn-primary">Search</button>
+            <button type="submit" style="margin-left: 5px;vertical-align: top;" class="btn btn-primary">Search</button>
             </div>
           </div>
         </form>
@@ -31,14 +31,14 @@
                         <div class="card-body">
                             <div class="row">
                             <div class="col-md-5">
-                                <img src="/static/images/books/cover.jpg" style="height: 250px; width: 397px; margin: 0 auto; display: block;" class="card-img-top" alt="{{books[1]}}">
+                                <img src="/static/images/books/cover-{{books['id']}}.jpg" style="margin: 0 auto; display: block;" class="card-img-top" alt="{{books[1]}}">
 
                                 
                                 <div class="slick-carousel" style="width: 360px; margin: 0 auto; display: block;">
-                                    <div><img src="/static/images/books/cover.jpg"></div>
-                                    <div><img src="/static/images/books/cover.jpg"></div>
-                                    <div><img src="/static/images/books/cover.jpg"></div>
-                                    <div><img src="/static/images/books/cover.jpg"></div>
+                                    <div><img src="/static/images/books/cover-{{books['id']}}.jpg"></div>
+                                    <div><img src="/static/images/books/cover-{{books['id']}}.jpg"></div>
+                                    <div><img src="/static/images/books/cover-{{books['id']}}.jpg"></div>
+                                    <div><img src="/static/images/books/cover-{{books['id']}}.jpg"></div>
                                 </div>
 
                             </div>

@@ -27,9 +27,7 @@
                         <div class="card-body">
                             <div class="row">
                             <div class="col-md-5">
-                                <img src="/static/images/bg.jpg" style="height: 250px; width: 397px; 
-                                margin: 0 auto;
-                                display: block;" class="card-img-top" alt="{{books[1]}}">
+                                <img src="/static/images/books/cover-{{books['id']}}.jpg" style="margin: 0 auto; display: block;" class="card-img-top" alt="{{books[1]}}">
 								<a href="edit/{{books['id']}}" class="btn ml-3 mt-3 btn-outline-primary"><i class="bi bi-pen-fill"></i> Edit</a>
 								<a href="delete/{{books['id']}}" class="btn ml-3 mt-3 btn-outline-danger"><i class="bi bi-trash"></i> Delete</a>
 
@@ -66,7 +64,7 @@
 									<h4 class="font-weight-light">Book Owner(s)</h4>
 									<div class="row">
 									{% for user in books_owners %}
-										<div class="owner col-md-3" style="padding-left: 0; padding-right: 0;">
+										<div onclick="window.location='/admin/users/view/{{user['id']}}'" class="owner col-md-3" style="cursor: pointer;padding-left: 0; padding-right: 0;">
                                             <img src="https://api.dicebear.com/8.x/adventurer-neutral/png?size=72&seed={{user['name']}}&scale=110&radius=50&backgroundColor=763900,9e5622,ecad80,f2d3b1,d1d4f9,c0aede,b6e3f4,ffd5dc,ffdfbf&backgroundType=solid,gradientLinear" id="photo" style="height: auto !important; display: block;" class="mr-auto ml-auto">
 											<p class="text-center">{{user['name']}}</p>
 										</div>

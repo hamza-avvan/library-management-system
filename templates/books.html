@@ -23,7 +23,7 @@
 			    <div style="width: 90%; display: inline-block;">
 			    <input type="search" name="keyword" autofocus class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{keyword}}" placeholder="Search for books...">
 			    </div>
-				<button type="submit" style="margin-left: 5px;" class="btn btn-primary">Search</button>
+				<button type="submit" style="margin-left: 5px;vertical-align: top;" class="btn btn-primary">Search</button>
 			    </div>
 			  </div>
 			</form>
@@ -41,7 +41,7 @@
 				
 				{% for book in books %}
 				<div class="card book hover-overlay">
-				  <img src="/static/images/bg.jpg" style="cursor: pointer;" onclick="window.location='/books/{{book['id']}}'" class="card-img-top" alt="{{book[1]}}">
+				  <span style="cursor: pointer;height: 190px;display: block;background-position: center;background-image: url(/static/images/books/cover-{{book['id']}}.jpg)" style="cursor: pointer;" onclick="window.location='/books/{{book['id']}}'" class="card-img-top" alt="{{book[1]}}"></span>
 				  <div class="card-body">
 				    <h5 class="card-title"><a href="/books/{{book['id']}}">{{book['name']}}</a></h5>
 				    {% if book['availability'] < 1 %}

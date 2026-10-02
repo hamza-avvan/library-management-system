@@ -4,3 +4,5 @@ flask-mysql==1.5.2
 timeago==1.0.15
 Flask-Mail
 cryptography
+Flask-APScheduler
+python-dotenv

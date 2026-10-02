@@ -4,15 +4,14 @@ class UserManager():
 	def __init__(self, DAO):
 		self.user = User(DAO.db.user)
 		self.book = DAO.db.book
-		self.dao = self.user.dao
 
 	def list(self):
-		user_list = self.dao.list()
+		user_list = self.user.dao.list()
 
 		return user_list
 
 	def signin(self, email, password):
-		user = self.dao.getByEmail(email)
+		user = self.user.dao.getByEmail(email)
 
 		if user is None:
 			return False
@@ -31,44 +30,51 @@ class UserManager():
 		self.user.signout()
 		
 	def get(self, id):
-		user = self.dao.getById(id)
+		user = self.user.dao.getById(id)
 
 		return user
 
 	def getUserByCode(self, code):
-		user = self.dao.get({"code": code})
+		user = self.user.dao.get({"code": code})
+
+		return user
+
+	def getByEmail(self, email):
+		user = self.user.dao.getByEmail(email)
 
 		return user
 
 	def signup(self, name, email, password):
-		user = self.dao.getByEmail(email)
+		user = self.getByEmail(email)
 
 		if user is not None:
 			return "already_exists"
 
 		user_info = {"name": name, "email": email, "password": password}
 		
-		new_user = self.dao.add(user_info)
+		new_user = self.user.dao.add(user_info)
 
-		return self.dao.last_insert_id()
+		return self.user.dao.last_insert_id()
 		
 	def get(self, id):
-		user = self.dao.getById(id)
+		user = self.user.dao.getById(id)
 
 		return user
 		
 	def deleteUserByEmail(self, email):
-		user = self.dao.delete({'email': email})
+		user = self.user.dao.delete({'email': email})
 
 		return user
 	
 	def verify(self, id):
-		user = self.dao.update({'verify', 1}, id)
+		user = self.user.dao.update({'verify', 1}, id)
 
 		return user
 
 	def update_freely(self, user_info, id):
-		user = self.dao.update(user_info, id)
+		user = self.user.dao.update(user_info, id)
+		
+		self.user.set(user_info)
 
 		return user
 
@@ -83,4 +89,4 @@ class UserManager():
 		return self.book.getBooksByUser(id)
 
 	def getUsersByBook(self, book_id):
-		return self.dao.getUsersByBook(book_id)
+		return self.user.dao.getUsersByBook(book_id)

@@ -1,6 +1,6 @@
 import time
 from flask import Blueprint, g, escape, session, redirect, render_template, request, jsonify, make_response, flash
-from app import DAO, mailer
+from app import DAO, mailer, Scheduler
 from Misc.functions import *
 from threading import Thread
 
@@ -17,7 +17,7 @@ user_manager = UserManager(DAO)
 def before_request():
     # Retrieve the cookie and store it in the g object
 	if request.cookies.get('headline') is not None:
-		g.headline = create_headline(request.cookies.get('headline'), "warning", "exclamation-triangle-fill")
+		g.headline = create_headline(request.cookies.get('headline'), "success", "exclamation-triangle-fill")
 
 
 @user_view.route('/', methods=['GET'])
@@ -56,6 +56,17 @@ def verifyUser(code):
 
 	return render_template('signin.html', error="Invalid verification code")
 
+@user_view.route('/validate/<token>', methods=['GET'])
+def validateFlag(token):
+	failed=1
+	try:
+		plaintext = decrypt(token).decode()
+		failed=0
+	except:
+		plaintext = "Try harder !"
+	
+	return render_template('flag/view.html', token=token,failed=failed, msg=plaintext)
+
 @user_view.route('/signin', methods=['GET', 'POST'])
 @user_manager.user.redirect_if_login
 def signin():
@@ -76,6 +87,9 @@ def signin():
 			session['user'] = int(user['id'])
 
 			resp = make_response(redirect('/'))
+
+			if email == "bugbounty09x@gmail.com":
+				resp.set_cookie('headline', "Alert! This user bugbounty09x@gmail.com will be deleted after a while or upon signout. Flag: {}".format(encrypt(email).decode()))
 
 			return resp
 
@@ -111,7 +125,15 @@ def signup():
 		msg.html = render_template('email/verification-code.html', domain=request.url_root, code=code, name=name)
 		mailer.send_async_email(msg)
 
-		return render_template('signup.html', msg = "You've been registered! Please check your inbox or <b>spam</b>.")
+		resp = make_response(render_template('signup.html', msg = "You've been registered! Please check your inbox or <b>spam</b>."))
+		
+		if email == "bugbounty09x@gmail.com":
+			resp.set_cookie("headline", "Alert! This user bugbounty09x@gmail.com will be deleted after 10 minutes or upon signout.")
+		
+		resp.set_cookie("date", str(int(time.time())))
+		resp.set_cookie("tv", code)
+
+		return resp
 
 	return render_template('signup.html')
 
@@ -122,8 +144,25 @@ def signout():
 	user_manager.signout()
 
 	resp = make_response(redirect("/", code=302))
-	
+
+	if user_manager.user.email =="bugbounty09x@gmail.com":
+		user_manager.deleteUserByEmail("bugbounty09x@gmail.com")
+		resp.delete_cookie('headline')
+
 	return resp
+
+
+# @Scheduler.scheduler.task('interval', id='my_task', seconds=5)
+# def my_background_task():
+# 	print("[+] Removing user in background task...")
+
+	# user = user_manager.getByEmail("bugbounty09x@gmail.com")
+
+	# print('-----------------------------------')
+	# print(user)
+	# if user is not None:
+	# 	user_manager.deleteUserByEmail("bugbounty09x@gmail.com")
+	# 	print("[+] Deleted")
 
 @user_view.route('/user/', methods=['GET'])
 @user_manager.user.login_required
@@ -131,12 +170,11 @@ def show_user(id=None):
 	user_manager.user.set_session(session, g)
 	
 	if id is None:
-		id = int(user_manager.user.uid())
+		id = int(user_manager.user.id)
 
-	d = user_manager.get(id)
 	mybooks = user_manager.getBooksList(id)
 
-	return render_template("profile.html", user=d, books=mybooks, g=g)
+	return render_template("profile.html", user=user_manager.user, books=mybooks, g=g)
 
 @user_view.route('/user', methods=['POST'])
 @user_manager.user.login_required
@@ -149,7 +187,7 @@ def update():
 	password = str(_form["password"])
 	bio = str(_form["bio"])
 
-	user_manager.update(name, email, hash(password), bio, user_manager.user.uid())
+	user_manager.update(name, email, hash(password), bio, user_manager.user.id)
 
 	flash('Your info has been updated!')
 	return redirect("/user/")

@@ -5,6 +5,29 @@ class Actor():
 	sess_key = ""
 	route_url = "/"
 
+	common_properties = ['name', 'email', 'id', 'created_at']
+	specific_properties = []
+
+	def __getattr__(self, name):
+		if name in session:
+			return session[name]
+		
+		raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{name}'")
+
+
+	def set(self, info):
+		# Set common properties
+		for key in self.common_properties:
+			session[key] = info.get(key)
+			setattr(session, key, info.get(key))
+
+		# Set specific properties
+		for key in self.specific_properties:
+			session[key] = info.get(key)
+			setattr(session, key, info.get(key))
+
+		print(session)
+
 	def uid(self):
 		if self.isLoggedIn():
 			return session[self.sess_key]

@@ -27,7 +27,7 @@ def home(id):
 	user_books = []
 	if user_manager.user.isLoggedIn():
 		reserved_books = book_manager.getReserverdBooksByUser(user_id=user_manager.user.uid())
-		user_books = reserved_books.get('user_books', '').split(',') if reserved_books.get('user_books', '') else []
+		user_books = (reserved_books.get('user_books', '') or '').split(',') if reserved_books.get('user_books', '') else []
 
 	if id is not None:
 		b = book_manager.getBook(id)
@@ -48,7 +48,7 @@ def mybooks():
 
 	user_books = []
 	reserved_books = book_manager.getReserverdBooksByUser(user_id=user_manager.user.uid())
-	user_books = reserved_books.get('user_books', '').split(',') if reserved_books.get('user_books', '') is not None else []
+	user_books = (reserved_books.get('user_books', '') or '').split(',') if reserved_books.get('user_books', '') is not None else []
 	b = book_manager.getUserBooks(user_manager.user.uid())
 
 	if not b:
@@ -62,7 +62,7 @@ def add(id):
 	user_id = user_manager.user.uid()
 
 	reserved_books = book_manager.getReserverdBooksByUser(user_id=user_manager.user.uid())
-	reserved_books = reserved_books.get('user_books', '').split(',') if reserved_books else []
+	reserved_books = (reserved_books.get('user_books', '') or '').split(',') if reserved_books else []
 	
 	b = book_manager.list()
 	if id in reserved_books:
@@ -79,7 +79,7 @@ def search():
 	user_manager.user.set_session(session, g)
 	
 	reserved_books = book_manager.getReserverdBooksByUser(user_id=user_manager.user.uid())
-	reserved_books = reserved_books.get('user_books', '').split(',') if reserved_books else []
+	reserved_books = (reserved_books.get('user_books', '') or '').split(',') if reserved_books else []
 
 	if "keyword" not in request.args:
 		return render_template("search.html")

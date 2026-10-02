@@ -1,0 +1,26 @@
+{%extends "/shared/empty.html" %}
+
+{% block title %}Validate Flag{% endblock %}
+
+{% block head %}
+	{{ super() }}
+
+    <link rel="stylesheet" href="/static/home.css" />
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        {% if failed %}
+            <h1>{{msg}}</h1>
+        {% else %}
+            <h1>Success</h1>
+            <p>Flag: <b>{{token}}</b></p>
+            <p>Flag Decoded: <b>{{msg}}</b></p>
+        {% endif %}
+
+        <div class="mt-5">
+            <iframe width="660" height="315" src="https://www.youtube.com/embed/lCcSILKgLcs?si=SP6QVvofV76IJNAw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+{% endblock %}

@@ -55,13 +55,12 @@
 								<div class="">
 									{% if books %}
 										<!-- <h2 class="text-center mt-4" style="margin-bottom: 0.5em;">Your Books</h2> -->
-										<div class="text-center mb-4 mt-4"><i class="text-center mt-4 bi-book" style="
-											font-size: 6em; "></i></div>
+										<h3 class="text-center mb-4 mt-4">📖 {{user['name']}}'s collection</h3>
 										<div class="row m-1">
 										{% for book in books %}
 											<div class="card book col-md-12 p-0" style="position: relative; cursor: pointer;" onclick="window.location='/admin/books/{{book['id']}}'">
 												<div class="d-inline-block " style="position: relative">
-													<div style="height: 100%;background-position: left;background-size: cover;background-image: url(/static/images/bg.jpg);width: 5em;" class="card-img-top" alt="{{book[1]}}"></div>
+													<div style="height: 100%;background-position: left;background-size: cover;background-image: url(/static/images/books/cover-{{book['id']}}.jpg);width: 5em;" class="card-img-top" alt="{{book[1]}}"></div>
 												</div>
 												<div class="card-body p-0 pb-2 m-2 mb-0 d-inline-block" style="margin-bottom: 0 !important;margin-top: 0 !important;position: relative;top: -9px;margin-left: 8px !important;">
 				    								<h5 class="card-title m-0"><a href="/admin/books/{{book['id']}}">{{book['name']}}</a></h5>
@@ -126,10 +125,10 @@
 										</div>
 										<div class="form-group">
 											<form method="POST" action="/admin/user/disable/{{user['id']}}">
-												<button class="col-md-6 btn btn-outline-warning float-right">Disable <i class="bi bi-person-fill-x"></i></button>
+												<button class="col-md-5 btn btn-outline-warning float-right">Disable <i class="bi bi-person-fill-x"></i></button>
 											</form>
 											<form method="POST" action="/admin/user/delete/{{user['id']}}">
-												<button class="col-md-6 btn btn-outline-danger float-right">Delete <i class="bi bi-trash"></i></button>
+												<button class="col-md-5 btn btn-outline-danger float-left">Delete <i class="bi bi-trash"></i></button>
 											</form>
 										</div>
 									</div>

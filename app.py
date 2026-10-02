@@ -8,7 +8,9 @@ app.secret_key = os.environ.get('SECRET_KEY')
 # Setting DAO Class
 from Models.DAO import DAO
 from Models.Mailer import Mailer
+from Tasks.Scheduler import Scheduler
 
+Scheduler = Scheduler(app)
 DAO = DAO(app)
 mailer = Mailer(app)
 

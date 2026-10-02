@@ -26,7 +26,7 @@ def ago(date):
     """
     now = datetime.datetime.now() + datetime.timedelta(seconds = 60 * 3.4)
 
-    return (timeago.format(date, now)) # will print x secs/hours/minutes ago
+    return (timeago.format(date.replace(tzinfo=None), now)) # will print x secs/hours/minutes ago
 
 def run_command(command):
     return subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).stdout.read()

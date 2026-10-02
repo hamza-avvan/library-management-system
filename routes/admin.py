@@ -98,9 +98,6 @@ def view_book(id):
 		b = book_manager.getBook(id)
 		users = user_manager.getUsersByBook(id)
 
-		print('----------------------------')
-		print(users)
-		
 		if b and len(b) <1:
 			return render_template('books/book_view.html', error="No book found!")
 
