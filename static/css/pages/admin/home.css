@@ -1,0 +1,308 @@
+/* ============================================================
+     Apple-inspired glass admin welcome
+     ============================================================ */
+
+  .admin-home {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', Roboto, sans-serif;
+    color: #0b2b4a;
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.25rem;
+  }
+
+  /* ---------- Glass card ---------- */
+  .admin-card {
+    position: relative;
+    max-width: 640px;
+    width: 100%;
+    padding: 3.5rem 3rem 3rem 3rem;
+    border-radius: 32px;
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.32);
+    -webkit-backdrop-filter: blur(34px) saturate(190%);
+    backdrop-filter: blur(34px) saturate(190%);
+
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.75) inset,
+      0 -1px 0 rgba(255, 255, 255, 0.3) inset,
+      0 0 0 1px rgba(255, 255, 255, 0.5),
+      0 30px 60px -20px rgba(0, 30, 60, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+  }
+  .admin-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0) 35%,
+      rgba(255, 255, 255, 0) 65%,
+      rgba(255, 255, 255, 0.2) 100%
+    );
+    pointer-events: none;
+    opacity: 0.85;
+  }
+
+  /* ---------- Icon badge ---------- */
+  .admin-icon {
+    position: relative;
+    width: 84px;
+    height: 84px;
+    border-radius: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(160deg, rgba(255,255,255,0.75), rgba(255,255,255,0.3));
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
+    backdrop-filter: blur(20px) saturate(200%);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.85) inset,
+      0 0 0 1px rgba(255,255,255,0.55),
+      0 20px 40px -16px rgba(59, 124, 191, 0.45);
+  }
+  .admin-icon i {
+    font-size: 2.1rem;
+    color: #1f4e7a;
+    filter: drop-shadow(0 2px 6px rgba(31, 78, 122, 0.25));
+  }
+
+  /* ---------- Typography ---------- */
+  .admin-title {
+    font-size: 2.6rem;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    margin: 0 0 0.5rem 0;
+    background: linear-gradient(180deg, #0b2b4a 0%, #1e4770 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .admin-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: rgba(11, 43, 74, 0.82);
+    margin: 0 auto 2.25rem auto;
+    max-width: 460px;
+    font-weight: 400;
+  }
+
+  /* ---------- Admin role pill ---------- */
+  .admin-role-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #1f4e7a;
+    background: rgba(255, 255, 255, 0.45);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.7) inset,
+      0 4px 12px -6px rgba(0, 30, 60, 0.15);
+    margin-bottom: 1.75rem;
+  }
+  .admin-role-pill i { color: #4a7dff; font-size: 0.9rem; }
+
+  /* ---------- Search (glassy pill) ---------- */
+  .admin-search { text-align: left; margin-bottom: 2rem; }
+
+  .admin-search .search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.4rem 0.4rem 1.25rem;
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.35);
+    -webkit-backdrop-filter: blur(22px) saturate(190%);
+    backdrop-filter: blur(22px) saturate(190%);
+
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.7) inset,
+      0 0 0 1px rgba(255, 255, 255, 0.35),
+      0 8px 24px -12px rgba(0, 30, 60, 0.22);
+    transition: box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+  }
+  .admin-search .search-wrapper:focus-within {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(74, 125, 255, 0.5);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 1) inset,
+      0 0 0 4px rgba(74, 125, 255, 0.18),
+      0 12px 32px -12px rgba(74, 125, 255, 0.4);
+  }
+  .admin-search .search-wrapper .search-icon {
+    color: #3f668c;
+    font-size: 1.15rem;
+    flex-shrink: 0;
+  }
+  .admin-search .search-wrapper .form-control {
+    border: none;
+    background: transparent;
+    padding: 0.85rem 0.4rem;
+    font-size: 1.02rem;
+    color: #0b2b4a;
+    box-shadow: none !important;
+    flex: 1;
+    min-width: 0;
+  }
+  .admin-search .search-wrapper .form-control::placeholder {
+    color: rgba(11, 43, 74, 0.5);
+  }
+  .admin-search .btn-search {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.72rem 1.6rem;
+    border-radius: 999px;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    color: #fff;
+    cursor: pointer;
+    flex-shrink: 0;
+    background: linear-gradient(180deg, #2a6ec9 0%, #0b2b4a 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.25) inset,
+      0 8px 20px -8px rgba(11, 43, 74, 0.55);
+    transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  }
+  .admin-search .btn-search:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.3) inset,
+      0 12px 26px -10px rgba(11, 43, 74, 0.65);
+  }
+  .admin-search .btn-search:active {
+    transform: translateY(0);
+    filter: brightness(0.96);
+  }
+  .admin-search .form-text {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.9rem;
+    padding-left: 0.75rem;
+    font-size: 0.85rem;
+    color: rgba(11, 43, 74, 0.68);
+  }
+  .admin-search .form-text i {
+    color: rgba(11, 43, 74, 0.5);
+    font-size: 0.95rem;
+  }
+
+  /* ---------- Quick actions ---------- */
+  .admin-actions {
+    margin-top: 1.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.55);
+  }
+  .admin-actions-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(11, 43, 74, 0.6);
+    margin: 0 0 1rem 0;
+    text-align: left;
+    padding-left: 0.25rem;
+  }
+  .admin-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  .admin-action {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem 1rem;
+    border-radius: 16px;
+    text-decoration: none;
+    color: #0b2b4a;
+    background: rgba(255, 255, 255, 0.32);
+    -webkit-backdrop-filter: blur(14px) saturate(170%);
+    backdrop-filter: blur(14px) saturate(170%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.6) inset,
+      0 4px 12px -6px rgba(0, 30, 60, 0.15);
+    transition: all 0.18s ease;
+    text-align: left;
+  }
+  .admin-action:hover {
+    background: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.8) inset,
+      0 10px 24px -10px rgba(0, 30, 60, 0.25);
+    color: #0b2b4a;
+  }
+  .admin-action .action-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, rgba(74, 125, 255, 0.18), rgba(74, 125, 255, 0.08));
+    border: 1px solid rgba(74, 125, 255, 0.2);
+    color: #1f4e7a;
+    font-size: 1.05rem;
+    flex-shrink: 0;
+  }
+  .admin-action .action-text { min-width: 0; }
+  .admin-action .action-label {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #0b2b4a;
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+  }
+  .admin-action .action-hint {
+    display: block;
+    font-size: 0.78rem;
+    color: rgba(11, 43, 74, 0.6);
+    margin-top: 2px;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 576px) {
+    .admin-home { padding: 2rem 1rem; }
+    .admin-card { padding: 2.5rem 1.5rem; border-radius: 26px; }
+    .admin-title { font-size: 2rem; }
+    .admin-sub { font-size: 0.95rem; margin-bottom: 1.75rem; }
+    .admin-icon { width: 68px; height: 68px; border-radius: 22px; }
+    .admin-icon i { font-size: 1.7rem; }
+    .admin-search .search-wrapper { padding: 0.35rem 0.35rem 0.35rem 1rem; }
+    .admin-search .btn-search { padding: 0.68rem 1.1rem; }
+    .admin-search .btn-search span { display: none; }
+    .admin-actions-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Fallback for browsers without backdrop-filter */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .admin-card { background: rgba(255, 255, 255, 0.85); }
+    .admin-search .search-wrapper { background: rgba(255, 255, 255, 0.9); }
+    .admin-action { background: rgba(255, 255, 255, 0.85); }
+    .admin-role-pill { background: rgba(255, 255, 255, 0.85); }
+  }
+
+/* bump ?v=N in layout on change */

@@ -1,0 +1,279 @@
+/* ---------- Search bar ---------- */
+  
+  
+  .book-detail .search-wrapper .form-control {
+    border: none;
+    background: transparent;
+    padding: 0.85rem 0.5rem 0.85rem 0.5rem;
+    font-size: 1.05rem;
+    box-shadow: none !important;
+    color: #0b2b4a;
+  }
+  
+  .book-detail .search-wrapper .btn-primary {
+    border-radius: 2rem !important;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    background: #0b2b4a;
+    border: none;
+    transition: background 0.2s, transform 0.1s;
+  }
+  
+
+  /* ---------- Alert ---------- */
+  .book-detail .alert-success {
+    border-radius: 1.5rem;
+    background: #e3f5ec;
+    border: 1px solid #b3dfc9;
+    color: #0b5232;
+    padding: 1rem 1.5rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ---------- Main book card ---------- */
+  .book-detail .book-detail-card {
+    background: #fff;
+    border-radius: 2rem;
+    box-shadow: 0 15px 40px -18px rgba(0, 30, 60, 0.18), 0 0 0 1px rgba(0,0,0,0.03);
+    overflow: hidden;
+    padding: 2.5rem;
+  }
+
+  /* ---------- Cover column ---------- */
+  .book-detail .cover-wrapper {
+    position: relative;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    box-shadow: 0 15px 30px -12px rgba(0, 30, 60, 0.25);
+    aspect-ratio: 2 / 3;
+    background: #d9e5f0;
+  }
+  .book-detail .cover-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .book-detail .cover-wrapper:hover img {
+    transform: scale(1.03);
+  }
+  .book-detail .cover-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.08) 100%);
+    pointer-events: none;
+  }
+
+  /* ---------- Action buttons ---------- */
+  .book-detail .action-buttons {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+  .book-detail .action-buttons .btn {
+    flex: 1;
+    border-radius: 2rem;
+    padding: 0.7rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    transition: all 0.15s;
+    border: 1.5px solid transparent;
+    text-decoration: none;
+  }
+  .book-detail .btn-outline-edit {
+    border-color: #cbdae9;
+    color: #1f4e7a;
+    background: #fff;
+  }
+  .book-detail .btn-outline-edit:hover {
+    background: #e9f2fa;
+    border-color: #8db5db;
+    color: #0b2b4a;
+  }
+  .book-detail .btn-outline-delete {
+    border-color: #f6d5d5;
+    color: #b02a2a;
+    background: #fff;
+  }
+  .book-detail .btn-outline-delete:hover {
+    background: #fde8e8;
+    border-color: #e49c9c;
+    color: #8b1e1e;
+  }
+
+  /* ---------- Platforms ---------- */
+  .book-detail .platforms {
+    background: #f6f9fc;
+    border-radius: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    margin-top: 1.5rem;
+    border: 1px solid #e5edf5;
+  }
+  .book-detail .platforms h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #7b98b3;
+    margin-bottom: 0.75rem;
+  }
+  
+  
+  
+
+  /* ---------- Right column content ---------- */
+  .book-detail .book-title-lg {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    color: #0b2b4a;
+    margin-bottom: 0.75rem;
+  }
+
+  .book-detail .book-meta-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .book-detail .badge-soft-warning {
+    background: #fff3e0;
+    color: #b85c00;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1px solid #ffe0b5;
+  }
+  .book-detail .badge-soft-success {
+    background: #e3f5ec;
+    color: #0e6b3e;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1px solid #c2ead7;
+  }
+  .book-detail .badge-soft-secondary {
+    background: #eef2f6;
+    color: #5d7f9c;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1px solid #dde5ee;
+  }
+
+  .book-detail .book-description {
+    font-size: 1.02rem;
+    line-height: 1.7;
+    color: #435e78;
+    margin: 1.25rem 0 1.5rem 0;
+  }
+
+  .book-detail .author-line {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1rem;
+    color: #435e78;
+    margin-bottom: 1.5rem;
+  }
+  .book-detail .author-line .label {
+    font-weight: 600;
+    color: #7b98b3;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .book-detail .author-line .value {
+    font-weight: 600;
+    color: #0b2b4a;
+  }
+
+  /* ---------- Owners section ---------- */
+  .book-detail .owners-section {
+    margin-top: 2.25rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid #edf2f7;
+  }
+  .book-detail .owners-section h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #7b98b3;
+    margin-bottom: 1.25rem;
+  }
+  .book-detail .owners-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+  }
+  .book-detail .owner-card {
+    background: #f6f9fc;
+    border-radius: 1.25rem;
+    padding: 1rem 0.75rem;
+    text-align: center;
+    border: 1px solid #e5edf5;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .book-detail .owner-card:hover {
+    background: #e9f2fa;
+    border-color: #c8dcee;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px -10px rgba(0, 50, 90, 0.2);
+  }
+  .book-detail .owner-card img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    margin: 0 auto 0.6rem auto;
+    display: block;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  }
+  .book-detail .owner-card p {
+    margin: 0;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #0b2b4a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ---------- Empty state ---------- */
+  
+  
+  
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 768px) {
+    .book-detail .book-detail-card { padding: 1.5rem; }
+    .book-detail .book-title-lg { font-size: 1.85rem; }
+    .book-detail .cover-wrapper { max-width: 280px; margin: 0 auto 1.5rem auto; }
+  }
+
+/* bump ?v=N in layout on change */

@@ -1,27 +1,52 @@
-{%extends "/shared/layout.html" %}
+{% extends "/shared/layout.html" %}
+{% from "/shared/partials/_macros.html" import search_pill %}
 
 {% block title %}Home{% endblock %}
 
 {% block head %}
-	{{ super() }}
+  {{ super() }}
+  <link rel="stylesheet" href="/static/home.css" />
 
-    <link rel="stylesheet" href="/static/home.css" />
+  <link rel="stylesheet" href="/static/css/pages/home.css?v=1" />
 {% endblock %}
 
 {% block content %}
-	<div class="container d-flex h-75">
-	    <div class="row justify-content-center align-self-center welcome">
-	    	<h3>WELCOME</h3>
-			<div style="width:100%">
-			<form action="/books/search" method="GET">
-			  <div class="form-group">
-			    <label for="exampleInputEmail1">Search</label>
-			    <input type="search" autocomplete="false" name="keyword" autofocus class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search for books...">
-			    <small id="emailHelp" class="form-text text-muted">Available books will be shown to members.</small>
-			  </div>
-			  <button type="submit" class="btn btn-primary">Search</button>
-			</form>
-			</div>
-	    </div>
-	</div>
+
+
+<div class="welcome-page">
+  <div class="welcome-card">
+
+    <!-- Icon -->
+    <div class="welcome-icon">
+      <i class="bi bi-book-half"></i>
+    </div>
+
+    <!-- Heading -->
+    <h1 class="welcome-title">Welcome</h1>
+    <p class="welcome-sub">
+      Discover books from the library's collection. Search by title, author, or keyword to find your next read.
+    </p>
+
+    <!-- Search -->
+    <div class="welcome-search">
+      {{ search_pill(
+        '/books/search', placeholder='Search for books...', autofocus=true,
+        input_id='exampleInputEmail1', aria_label='', form_class='',
+        button_class='btn-search', button_icon='bi-search',
+        button_label_span=true, form_wraps_search=true, autocomplete='off',
+        describedby='emailHelp',
+        help_text='Available books will be shown to members.',
+        help_id='emailHelp', help_icon='bi-info-circle'
+      ) }}
+    </div>
+
+    <!-- Hints -->
+    <div class="welcome-hints">
+      <span class="welcome-hint"><i class="bi bi-search"></i> Search by title</span>
+      <span class="welcome-hint"><i class="bi bi-person"></i> Search by author</span>
+      <span class="welcome-hint"><i class="bi bi-bookmark"></i> Save to your collection</span>
+    </div>
+
+  </div>
+</div>
 {% endblock %}

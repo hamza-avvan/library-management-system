@@ -1,0 +1,212 @@
+.user-profile {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #0b2b4a;
+    padding-bottom: 3rem;
+  }
+
+  /* ---------- Flash ---------- */
+  .user-profile .flash {
+    background: #e3f5ec;
+    border: 1px solid #b3dfc9;
+    color: #0b5232;
+    border-radius: 1.25rem;
+    padding: 1rem 1.5rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ---------- Layout ---------- */
+  .user-profile .profile-grid {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    margin-top: 1.5rem;
+  }
+  @media (max-width: 992px) {
+    
+  }
+
+  /* ---------- Left identity card ---------- */
+  
+  .user-profile .avatar-ring {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 1rem auto;
+    background: #eef3f8;
+    padding: 4px;
+    box-shadow: 0 0 0 4px #fff, 0 0 0 5px #dde8f2, 0 10px 25px -10px rgba(0, 30, 60, 0.25);
+    display: inline-block;
+  }
+  
+
+  
+  
+  
+
+  
+  
+  .user-profile .pill-books {
+    background: #fff3e0;
+    color: #b85c00;
+    border-color: #ffe0b5;
+  }
+  
+
+  
+  
+  
+  
+  .user-profile .identity-section .bio.muted {
+    color: #8ba0b8;
+    font-style: italic;
+  }
+  
+  
+
+  /* ---------- Right content card ---------- */
+  
+
+  /* Tabs bar */
+  .user-profile .tabs-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.75rem 0.9rem 0 0.9rem;
+    border-bottom: 1px solid #edf2f7;
+    background: #fbfdff;
+  }
+  .user-profile .tab-btn {
+    background: transparent;
+    border: none;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #7b98b3;
+    cursor: pointer;
+    border-radius: 0.85rem 0.85rem 0 0;
+    transition: color 0.15s, background 0.15s;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  
+  
+  
+  
+
+  /* Panels */
+  .user-profile .tab-panel {
+    padding: 1.75rem 1.5rem;
+    display: none;
+    animation: fadeIn 0.25s ease;
+  }
+  
+  /* Panel heading */
+  
+  
+
+  /* ---------- Books list ---------- */
+  
+  
+  
+  .user-profile .book-cover {
+    width: 60px;
+    height: 84px;
+    border-radius: 0.6rem;
+    background-size: cover;
+    background-position: center;
+    background-color: #d9e5f0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
+  .user-profile .book-row:hover .book-cover {
+    transform: scale(1.04);
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+
+  /* ---------- Profile form ---------- */
+  
+  @media (max-width: 640px) {
+    
+  }
+  
+  
+  .user-profile .field label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #7b98b3;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .user-profile .field .form-control {
+    border: 1.5px solid #e0e9f2;
+    border-radius: 0.9rem;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.98rem;
+    color: #0b2b4a;
+    background: #fbfdff;
+    transition: all 0.15s ease;
+    box-shadow: none;
+    width: 100%;
+  }
+  .user-profile .field .form-control:focus {
+    border-color: #3b7cbf;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(59, 124, 191, 0.12);
+  }
+  .user-profile .field .form-control::placeholder { color: #b0c3d6; }
+  .user-profile .field textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  .user-profile .form-actions {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #edf2f7;
+  }
+  .user-profile .btn-save {
+    width: 100%;
+    border-radius: 2rem;
+    padding: 0.9rem 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    background: #0b2b4a;
+    color: #fff;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+  }
+  .user-profile .btn-save:hover {
+    background: #123a5e;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -10px rgba(11, 43, 74, 0.45);
+  }
+  .user-profile .btn-save:active { transform: translateY(0); }
+
+  /* ---------- Empty state ---------- */
+
+/* bump ?v=N in layout on change */

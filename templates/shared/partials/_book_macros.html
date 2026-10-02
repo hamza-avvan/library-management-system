@@ -1,0 +1,146 @@
+{# Example: {{ book_form('/books/add', 'bookAddForm', 'Add Book', 'Fill in the details below. You can add images, set the cover, and adjust availability.', 'Add Book', 'plus-lg') }} #}
+{# Example: {{ book_form('/admin/books/edit/' ~ book['id'], 'bookEditForm', 'Edit Book', 'Update the details below. Changes are visible to members immediately.', 'Update Book', 'check-lg', true, book) }} #}
+{% macro book_form(action, form_id, heading, subtitle, submit_label, submit_icon, is_edit=false, book=none) %}
+  <div class="container book-form{% if is_edit %} book-form--edit{% endif %}">
+
+    <a href="javascript:history.back()" class="back-btn" aria-label="Go back" title="Back">
+      <i class="bi bi-arrow-left"></i>
+    </a>
+
+    <div class="edit-header">
+      <h2>{{ heading }}{% if is_edit %} <span class="book-name">"{{ book['name'] }}"</span>{% endif %}</h2>
+      <p class="subtitle">{{ subtitle }}</p>
+    </div>
+
+    <div class="form-card">
+      <form action="{{ action }}" method="POST" enctype="multipart/form-data" id="{{ form_id }}">
+
+        <div class="form-section">
+          <div class="form-group">
+            <label for="title">Title</label>
+            {% if is_edit %}
+              <input type="text" name="title" class="form-control"
+                     value="{{ book['name'] }}" id="title" required
+                     placeholder="Enter book title">
+            {% else %}
+              <input type="text" name="title" class="form-control" id="title" required
+                     placeholder="Enter book title">
+            {% endif %}
+            <small class="form-text">Members will be able to search using the title.</small>
+          </div>
+
+          {% if is_edit %}
+          <div class="form-section images-section">
+          {% else %}
+          <div class="form-section">
+          {% endif %}
+            {% if not is_edit %}<div class="images-section">{% endif %}
+              <span class="section-label">
+                <i class="bi bi-images" style="color:#3b7cbf;"></i>
+                Book Images
+                <span class="image-counter" id="imgCounter">0 / 5</span>
+              </span>
+              <p class="section-hint">
+                Upload up to <strong>5 images</strong>. Drag &amp; drop them below, or click to browse.
+                Hover any image and click <em>“Set as Front”</em> to choose the cover members will see.
+              </p>
+
+              <div class="dropzone" id="dropzone" tabindex="0" role="button"
+                   aria-label="Upload book images">
+                <i class="bi bi-cloud-arrow-up dz-icon"></i>
+                <p class="dz-title">Drop images here or <span class="browse">browse</span></p>
+                <p class="dz-sub">PNG, JPG, WEBP · Max 5 MB each · Up to 5 images</p>
+                <input type="file" id="fileInput" accept="image/*" multiple>
+              </div>
+
+              <div class="preview-grid" id="previewGrid"></div>
+
+              {% if is_edit %}
+                <input type="hidden" name="front_image" id="frontImageInput" value="existing:{{ book['id'] }}">
+                <div id="hiddenFileInputs" style="display:none;"></div>
+                <input type="hidden" name="removed_images" id="removedImagesInput" value="">
+              {% else %}
+                <input type="hidden" name="front_image" id="frontImageInput" value="">
+                <div id="hiddenFileInputs" style="display:none;"></div>
+              {% endif %}
+            {% if not is_edit %}</div>{% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="author">Author</label>
+            {% if is_edit %}
+              <input type="text" name="author" class="form-control"
+                     id="author" value="{{ book['author'] }}" required
+                     placeholder="E.g. Imam Al Bukhari">
+            {% else %}
+              <input type="text" name="author" class="form-control" id="author"
+                     placeholder="E.g. Imam Al Bukhari">
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="qty">Quantity</label>
+            {% if is_edit %}
+              <input type="number" name="qty" class="form-control"
+                     id="qty" value="{{ book['count'] }}" required
+                     placeholder="E.g. 2">
+            {% else %}
+              <input type="number" name="qty" class="form-control" id="qty" required
+                     placeholder="E.g. 2">
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-check">
+            {% if is_edit %}
+              <input type="checkbox" name="avaliable" value="{{ book['availability'] }}"
+                     {{ 'checked' if book['availability'] == 1 else '' }}
+                     class="form-check-input" id="avaliable">
+            {% else %}
+              <input type="checkbox" name="avaliable" class="form-check-input" id="avaliable">
+            {% endif %}
+            <div>
+              <label class="form-check-label" for="avaliable">Available</label>
+              <small class="form-text">Book will not be shown to members if unchecked.</small>
+            </div>
+          </div>
+
+          <div class="platforms-block">
+            <span class="label">Platforms</span>
+            <div class="platforms-icons">
+              <i class="bi bi-xbox" style="color: #107c10;" title="Xbox"></i>
+              <i class="bi bi-youtube" style="color: #ff0000;" title="YouTube"></i>
+              <i class="bi bi-windows" style="color: #0078d4;" title="Windows"></i>
+              <i class="bi bi-github" style="color: #24292e;" title="GitHub"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-group">
+            <label for="desc">Description</label>
+            {% if is_edit %}
+              <textarea id="desc" name="desc" class="form-control"
+                        placeholder="Write a short description...">{{ book['desc'] }}</textarea>
+            {% else %}
+              <textarea id="desc" name="desc" class="form-control"
+                        placeholder="Write a short description..."></textarea>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <a href="javascript:history.back()" class="btn-cancel">
+            <i class="bi bi-x-lg"></i> Cancel
+          </a>
+          <button type="submit" class="btn-submit">
+            <i class="bi bi-{{ submit_icon }}"></i> {{ submit_label }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+{% endmacro %}

@@ -1,0 +1,250 @@
+/* ---------- Flash ---------- */
+  .book-detail .alert {
+    border-radius: 1.25rem;
+    padding: 1rem 1.5rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+  }
+  .book-detail .alert-success {
+    background: #e3f5ec;
+    border: 1px solid #b3dfc9;
+    color: #0b5232;
+  }
+
+  /* ---------- Search bar ---------- */
+  
+  
+  .book-detail .search-wrapper .search-icon {
+    color: #7b98b3;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .book-detail .search-wrapper .form-control {
+    border: none;
+    background: transparent;
+    padding: 0.85rem 0.5rem 0.85rem 0.6rem;
+    font-size: 1.05rem;
+    box-shadow: none !important;
+    color: #0b2b4a;
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .book-detail .search-wrapper .btn-primary {
+    border-radius: 2rem !important;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    background: #0b2b4a;
+    border: none;
+    transition: background 0.2s, transform 0.1s;
+    flex-shrink: 0;
+  }
+  
+
+  /* ---------- Main card ---------- */
+  .book-detail .detail-card {
+    background: #fff;
+    border-radius: 2rem;
+    box-shadow: 0 15px 40px -18px rgba(0, 30, 60, 0.15), 0 0 0 1px rgba(0,0,0,0.03);
+    padding: 2.5rem;
+    overflow: hidden;
+  }
+
+  /* ---------- Gallery (single image, same look as admin) ---------- */
+  .book-detail .gallery {
+    max-width: 380px;
+    margin: 0 auto;
+  }
+  .book-detail .cover-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    background: #d9e5f0;
+    box-shadow: 0 15px 30px -12px rgba(0, 30, 60, 0.25);
+    transition: box-shadow 0.25s ease;
+  }
+  .book-detail .cover-wrapper:hover {
+    box-shadow: 0 22px 40px -16px rgba(0, 50, 90, 0.32);
+  }
+  .book-detail .cover-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: transform;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .book-detail .cover-wrapper:hover img {
+    transform: scale(1.05);
+  }
+  .book-detail .cover-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.06) 100%);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* ---------- Right column ---------- */
+  .book-detail .book-name {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    color: #0b2b4a;
+    margin: 0 0 0.85rem 0;
+  }
+
+  .book-detail .meta-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .book-detail .pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1px solid transparent;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+  .book-detail .pill-warning {
+    background: #fff3e0;
+    color: #b85c00;
+    border-color: #ffe0b5;
+  }
+  .book-detail .pill-secondary {
+    background: #eef2f6;
+    color: #5d7f9c;
+    border-color: #dde5ee;
+  }
+  .book-detail .pill-success {
+    background: #e3f5ec;
+    color: #0e6b3e;
+    border-color: #c2ead7;
+  }
+
+  .book-detail .book-desc {
+    font-size: 1.02rem;
+    line-height: 1.7;
+    color: #435e78;
+    margin: 0 0 1.75rem 0;
+    white-space: pre-line;
+  }
+
+  .book-detail .author-line {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.95rem;
+    color: #435e78;
+    margin-bottom: 1.75rem;
+    padding: 0.9rem 1.1rem;
+    background: #f6f9fc;
+    border-radius: 1rem;
+    border: 1px solid #e5edf5;
+  }
+  .book-detail .author-line .label {
+    font-weight: 600;
+    color: #7b98b3;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .book-detail .author-line .value {
+    font-weight: 600;
+    color: #0b2b4a;
+    font-size: 1rem;
+  }
+
+  .book-detail .btn-add {
+    border-radius: 2rem;
+    padding: 0.9rem 1.9rem;
+    font-weight: 600;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: #fff;
+    color: #b85c00;
+    border: 1.5px solid #ffe0b5;
+    text-decoration: none;
+    transition: all 0.18s ease;
+    cursor: pointer;
+    letter-spacing: -0.005em;
+    margin-bottom: 1.75rem;
+  }
+  .book-detail .btn-add:hover:not(.disabled) {
+    background: #fff3e0;
+    border-color: #f5c98a;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -10px rgba(184, 92, 0, 0.4);
+    color: #9a4c00;
+  }
+  .book-detail .btn-add.disabled,
+  .book-detail .btn-add[aria-disabled="true"] {
+    background: #eef3f8;
+    color: #8ba0b8;
+    border-color: #e0e9f2;
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .book-detail .platforms {
+    background: #f6f9fc;
+    border-radius: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid #e5edf5;
+  }
+  .book-detail .platforms .label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #7b98b3;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+  
+  
+  
+
+  /* ---------- Empty state ---------- */
+  
+  
+  
+
+  /* ---------- Responsive ---------- */
+  @media (hover: none) {
+    .book-detail .cover-wrapper:hover img { transform: scale(1); }
+  }
+  @media (max-width: 992px) {
+    .book-detail .detail-card { padding: 1.75rem; }
+    .book-detail .gallery { max-width: 320px; margin-bottom: 2rem; }
+    .book-detail .book-name { font-size: 1.85rem; }
+  }
+  @media (max-width: 576px) {
+    .book-detail .detail-card { padding: 1.25rem; border-radius: 1.5rem; }
+    .book-detail .book-name { font-size: 1.55rem; }
+    .book-detail .gallery { max-width: 260px; }
+    .book-detail .search-wrapper .btn-primary { padding: 0.75rem 1.25rem; }
+  }
+
+/* bump ?v=N in layout on change */

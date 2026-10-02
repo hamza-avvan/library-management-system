@@ -1,0 +1,76 @@
+{# Example: {{ search_pill('/books/search', keyword, 'Search for books...') }} #}
+{% macro search_pill(
+  action, value=none, placeholder='Search...', autofocus=false, input_id='',
+  input_name='keyword', aria_label='Search',
+  form_class='d-flex align-items-center flex-grow-1', input_class='form-control',
+  button_class='btn btn-primary', icon_class='search-icon', icon_style='',
+  button_icon='', button_label='Search', button_label_span=false,
+  form_wraps_search=false, autocomplete='', describedby='', help_text='',
+  help_id='', help_icon=''
+) %}
+  {% if form_wraps_search %}<form action="{{ action }}" method="GET"{% if form_class %} class="{{ form_class }}"{% endif %}>{% endif %}
+  <div class="search-wrapper">
+    <i class="bi bi-search {{ icon_class }}"{% if icon_style %} style="{{ icon_style }}"{% endif %}></i>
+    {% if not form_wraps_search %}<form action="{{ action }}" method="GET" class="{{ form_class }}">{% endif %}
+      <input type="search" name="{{ input_name }}"{% if autofocus %} autofocus{% endif %} class="{{ input_class }}"{% if input_id %} id="{{ input_id }}"{% endif %}{% if describedby %} aria-describedby="{{ describedby }}"{% endif %}{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}{% if aria_label %} aria-label="{{ aria_label }}"{% endif %}{% if value is not none %} value="{{ value }}"{% endif %}
+             placeholder="{{ placeholder }}">
+      <button type="submit" class="{{ button_class }}">{% if button_icon %}<i class="bi {{ button_icon }}"></i>{% endif %}{% if button_label_span %}<span>{{ button_label }}</span>{% else %}{{ button_label }}{% endif %}</button>
+      {% if not form_wraps_search %}</form>{% endif %}
+  </div>
+  {% if form_wraps_search %}
+    {% if help_text %}<small{% if help_id %} id="{{ help_id }}"{% endif %} class="form-text">{% if help_icon %}<i class="bi {{ help_icon }}"></i>{% endif %} {{ help_text }}</small>{% endif %}
+  </form>
+  {% endif %}
+{% endmacro %}
+
+{# Example: {{ form_field('Email address', 'email', input_type='email', id='email', label_for='email', describedby='emailHelp', help_text="We'll never share your email with anyone else.", help_id='emailHelp') }} #}
+{% macro form_field(
+  label, name, input_type='text', id='', label_for='', value=none,
+  placeholder='', describedby='', required=false, classes='form-control',
+  help_text='', help_id='', help_class='form-text text-muted'
+) %}
+  <div class="form-group">
+    <label{% if label_for %} for="{{ label_for }}"{% endif %}>{{ label }}</label>
+    <input type="{{ input_type }}" class="{{ classes }}" name="{{ name }}"{% if id %} id="{{ id }}"{% endif %}{% if value is not none %} value="{{ value }}"{% endif %}{% if describedby %} aria-describedby="{{ describedby }}"{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}{% if required %} required{% endif %}>
+    {% if help_text %}<small{% if help_id %} id="{{ help_id }}"{% endif %} class="{{ help_class }}">{{ help_text }}</small>{% endif %}
+  </div>
+{% endmacro %}
+
+{# Example: {{ empty_state('bi-search', 'Try another search.', 'No Books Found') }} #}
+{# Example: {{ empty_state('bi-book', 'No books reserved yet', class_name='empty-books', hint='Books you add will show up here.') }} #}
+{% macro empty_state(icon, message='', heading='', class_name='empty-state', hint='') %}
+  <div class="{{ class_name }}">
+    <i class="bi {{ icon }}"></i>
+    {% if heading %}<h4>{{ heading }}</h4>{% endif %}
+    {% if message %}<p>{{ message }}</p>{% endif %}
+    {% if hint %}<p class="hint">{{ hint }}</p>{% endif %}
+  </div>
+{% endmacro %}
+
+{# Example: {{ page_header('bi-book-half', 'Manage Books', 'bi-collection', badge_text) }} #}
+{% macro page_header(
+  icon, title, badge_icon, badge_text='', badge_id='', badge_text_id=''
+) %}
+  <div class="page-header">
+    <h2><i class="bi {{ icon }}"></i> {{ title }}</h2>
+    <div class="badge-stats"{% if badge_id %} id="{{ badge_id }}"{% endif %}>
+      <i class="bi {{ badge_icon }}"></i>
+      {% if badge_text_id %}<span id="{{ badge_text_id }}">{{ badge_text }}</span>{% else %}{{ badge_text }}{% endif %}
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro auth_header(icon, title, subtitle, role='', role_icon='') %}
+  <div class="auth-header">
+    <div class="auth-icon{% if role %} auth-icon--admin{% endif %}">
+      <i class="bi {{ icon }}"></i>
+    </div>
+    {% if role %}
+      <span class="auth-role">
+        <i class="bi {{ role_icon }}"></i> {{ role }}
+      </span>
+    {% endif %}
+    <h1 class="auth-title{% if role %} auth-title--admin{% endif %}">{{ title }}</h1>
+    <p class="auth-sub">{{ subtitle }}</p>
+  </div>
+{% endmacro %}

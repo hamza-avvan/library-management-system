@@ -1,0 +1,402 @@
+.manage-users-view {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #0b2b4a;
+  }
+
+  /* ---------- Header ---------- */
+  .manage-users-view .page-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 2rem 0 1.25rem 0;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .manage-users-view .page-header h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #0b2b4a;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .manage-users-view .page-header h2 i {
+    font-size: 2rem;
+    color: #3b7cbf;
+  }
+  .manage-users-view .badge-stats {
+    background: #e9f2fa;
+    color: #0b2b4a;
+    font-weight: 500;
+    padding: 0.5rem 1.25rem;
+    border-radius: 3rem;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* ---------- Async search bar ---------- */
+  .manage-users-view .search-wrapper {
+    background: #fff;
+    border-radius: 2rem;
+    padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+    box-shadow: 0 8px 20px -8px rgba(0, 20, 30, 0.12), 0 0 0 1px rgba(0,0,0,0.02);
+    display: flex;
+    align-items: center;
+    transition: box-shadow 0.2s;
+    margin-bottom: 1.75rem;
+    position: relative;
+  }
+  .manage-users-view .search-wrapper:focus-within {
+    box-shadow: 0 12px 24px -8px rgba(13, 110, 253, 0.25), 0 0 0 2px rgba(13, 110, 253, 0.25);
+  }
+  .manage-users-view .search-wrapper .search-icon {
+    color: #7b98b3;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .manage-users-view .search-wrapper .form-control {
+    border: none;
+    background: transparent;
+    padding: 0.85rem 0.5rem 0.85rem 0.6rem;
+    font-size: 1.05rem;
+    box-shadow: none !important;
+    color: #0b2b4a;
+    flex: 1;
+    min-width: 0;
+  }
+  .manage-users-view .search-wrapper .form-control::placeholder {
+    color: #8ba0b8;
+  }
+
+  /* Small spinner on the right of the input while loading */
+  .manage-users-view .search-wrapper .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid #dde5ee;
+    border-top-color: #3b7cbf;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-right: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.15s;
+    flex-shrink: 0;
+  }
+  .manage-users-view .search-wrapper .spinner.visible { opacity: 1; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Small "clear" button */
+  .manage-users-view .search-wrapper .clear-btn {
+    border: none;
+    background: transparent;
+    color: #8ba0b8;
+    font-size: 1rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-right: 0.25rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s, background 0.15s;
+    flex-shrink: 0;
+  }
+  .manage-users-view .search-wrapper .clear-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .manage-users-view .search-wrapper .clear-btn:hover {
+    background: #f0f5fa;
+    color: #0b2b4a;
+  }
+
+  /* ---------- User list ---------- */
+  .manage-users-view .user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    min-height: 200px;
+    position: relative;
+    transition: opacity 0.2s ease;
+  }
+  .manage-users-view .user-list.loading { opacity: 0.5; }
+
+  .manage-users-view .user-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 72px 1fr auto;
+    gap: 1.25rem;
+    align-items: center;
+    background: #fff;
+    border-radius: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 6px 18px rgba(0, 20, 40, 0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    transition: transform 0.18s ease, box-shadow 0.22s ease;
+    overflow: hidden;
+    animation: fadeInUp 0.25s ease backwards;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .manage-users-view .user-row:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 30px -14px rgba(0, 50, 90, 0.22), 0 0 0 1px rgba(13, 110, 253, 0.12);
+    color: inherit;
+  }
+  .manage-users-view .user-row.is-locked {
+    background: #fdf7f7;
+  }
+
+  .manage-users-view .user-row .lock-stripe {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #e49c9c, #b02a2a);
+  }
+
+  .manage-users-view .user-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #eef3f8;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06), 0 0 0 3px #fff, 0 0 0 4px #e0e9f2;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .manage-users-view .user-main { min-width: 0; }
+
+  .manage-users-view .user-name-line {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.15rem;
+  }
+  .manage-users-view .user-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0b2b4a;
+    letter-spacing: -0.01em;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .manage-users-view .user-email {
+    font-size: 0.88rem;
+    color: #5d7f9c;
+    margin: 0 0 0.4rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .manage-users-view .user-bio {
+    font-size: 0.88rem;
+    color: #7b98b3;
+    line-height: 1.45;
+    margin: 0 0 0.6rem 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .manage-users-view .user-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .manage-users-view .pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.35rem 0.85rem;
+    border-radius: 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1px solid transparent;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+  .manage-users-view .pill-books {
+    background: #fff3e0;
+    color: #b85c00;
+    border-color: #ffe0b5;
+  }
+  .manage-users-view .pill-locked {
+    background: #fde8e8;
+    color: #b02a2a;
+    border-color: #fccfcf;
+  }
+  .manage-users-view .pill-ago {
+    background: #eef3f8;
+    color: #5d7f9c;
+    border-color: #dde5ee;
+  }
+
+  .manage-users-view .user-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .manage-users-view .user-actions form { margin: 0; }
+  .manage-users-view .icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    background: #fff;
+    border: 1.5px solid #e0e9f2;
+    color: #5d7f9c;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    padding: 0;
+  }
+  .manage-users-view .icon-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px -8px rgba(0, 30, 60, 0.25);
+  }
+  .manage-users-view .icon-btn.btn-disable:hover {
+    background: #f6f9fc;
+    border-color: #b8cfe4;
+    color: #0b2b4a;
+  }
+  .manage-users-view .icon-btn.btn-delete {
+    border-color: #f6d5d5;
+    color: #b02a2a;
+  }
+  .manage-users-view .icon-btn.btn-delete:hover {
+    background: #fde8e8;
+    border-color: #e49c9c;
+  }
+
+  /* ---------- Empty state ---------- */
+  .manage-users-view .empty-state {
+    background: #fff;
+    border-radius: 2rem;
+    padding: 4rem 2rem;
+    text-align: center;
+    box-shadow: 0 10px 30px -10px rgba(0, 20, 40, 0.08);
+    border: 1px solid #e5edf5;
+    color: #5d7f9c;
+  }
+  .manage-users-view .empty-state i {
+    font-size: 3.5rem;
+    color: #b8d0e5;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .manage-users-view .empty-state p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+  }
+  .manage-users-view .empty-state .hint {
+    font-size: 0.9rem;
+    color: #8ba0b8;
+    margin-top: 0.5rem;
+  }
+
+  /* ---------- Pagination ---------- */
+  .manage-users-view .pagination-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 0.9rem 1.25rem;
+    background: #fff;
+    border-radius: 1.25rem;
+    box-shadow: 0 6px 18px rgba(0, 20, 40, 0.05), 0 0 0 1px rgba(0,0,0,0.03);
+  }
+  .manage-users-view .pagination-info {
+    font-size: 0.88rem;
+    color: #5d7f9c;
+    font-weight: 500;
+  }
+  .manage-users-view .pagination-info strong { color: #0b2b4a; }
+
+  .manage-users-view .pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .manage-users-view .page-btn {
+    min-width: 38px;
+    height: 38px;
+    padding: 0 0.65rem;
+    border-radius: 0.7rem;
+    border: 1.5px solid #e0e9f2;
+    background: #fff;
+    color: #1f4e7a;
+    font-weight: 600;
+    font-size: 0.88rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+  }
+  .manage-users-view .page-btn:hover:not(:disabled):not(.active) {
+    background: #f0f5fa;
+    border-color: #b8cfe4;
+  }
+  .manage-users-view .page-btn.active {
+    background: #0b2b4a;
+    border-color: #0b2b4a;
+    color: #fff;
+    cursor: default;
+  }
+  .manage-users-view .page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .manage-users-view .page-ellipsis {
+    color: #8ba0b8;
+    padding: 0 0.25rem;
+    font-weight: 600;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 640px) {
+    .manage-users-view .user-row {
+      grid-template-columns: 56px 1fr;
+      padding: 1rem;
+      gap: 1rem;
+    }
+    .manage-users-view .user-avatar { width: 56px; height: 56px; }
+    .manage-users-view .user-actions {
+      grid-column: 1 / -1;
+      justify-content: flex-end;
+      border-top: 1px solid #edf2f7;
+      padding-top: 0.75rem;
+      margin-top: 0.25rem;
+    }
+    .manage-users-view .pagination-wrap {
+      justify-content: center;
+      text-align: center;
+    }
+  }
+
+/* bump ?v=N in layout on change */

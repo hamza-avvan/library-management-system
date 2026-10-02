@@ -1,39 +1,65 @@
-{%extends "/shared/admin_layout.html" %}
+{% extends "/shared/admin_layout.html" %}
+{% from "/shared/partials/_macros.html" import auth_header, form_field %}
 
-{% block title %}Admin Signin{% endblock %}
+{% block title %}Admin Sign in{% endblock %}
 
 {% block head %}
-	{{ super() }}
-
-    <link rel="stylesheet" href="/static/home.css" />
+  {{ super() }}
+  <link rel="stylesheet" href="/static/home.css" />
 {% endblock %}
 
 {% block content %}
-	<div class="container d-flex h-75">
-	    <div class="row justify-content-center align-self-center welcome">
+<div class="auth-page">
+  <div class="auth-card">
 
-			<div style="width:100%">
-			<h4>ADMIN SIGNIN</h4>
-			{% if error %}
-				<div class="alert alert-danger">
-					{{error}}
-				</div>
-			{% endif %}
+    {{ auth_header('bi-shield-lock-fill', 'Admin sign in', 'Restricted access. Please sign in with your administrator credentials.', 'Admin Console', 'bi-key-fill') }}
 
-			<form action="/admin/signin/" method="POST">
-			  <div class="form-group">
-			    <label for="exampleInputEmail1">Email address</label>
-			    <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter email">
-			    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-			  </div>
-			  <div class="form-group">
-			    <label for="exampleInputPassword1">Password</label>
-			    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-			  </div>
+    <!-- Error -->
+    {% if error %}
+      <div class="auth-alert auth-alert--danger">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span>{{ error }}</span>
+      </div>
+    {% endif %}
 
-			  <button type="submit" class="btn btn-primary">Signin</button>
-			</form>
-			</div>
-	    </div>
-	</div>
+    <!-- Form -->
+    <form action="/admin/signin/" method="POST">
+
+      {{ form_field(
+          'Email address',
+          'email',
+          input_type='email',
+          label_for='exampleInputEmail1',
+          describedby='emailHelp',
+          placeholder='Enter email',
+          help_text="We'll never share your email with anyone else.",
+          help_id='emailHelp'
+      ) }}
+
+      {{ form_field(
+          'Password',
+          'password',
+          input_type='password',
+          id='password',
+          label_for='exampleInputPassword1',
+          placeholder='Password'
+      ) }}
+
+      <button type="submit" class="auth-submit auth-submit--admin">
+        <i class="bi bi-shield-lock-fill"></i>
+        Sign in to Admin
+      </button>
+
+    </form>
+
+    <!-- Back to public -->
+    <div class="auth-back">
+      <a href="/">
+        <i class="bi bi-arrow-left"></i>
+        Back to public site
+      </a>
+    </div>
+
+  </div>
+</div>
 {% endblock %}

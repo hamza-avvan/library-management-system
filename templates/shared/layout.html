@@ -1,78 +1,148 @@
-<html>
-<!-- What the page is called in the tab bar  -->
-<!-- We will add out stylsheet here later -->
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	{%block head %}
-	<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="/static/bootstrap.min.css" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-	
-    <link rel="stylesheet" href="/static/style.css" />
-	
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    {% endblock %}
+  <title>{% block title %}{% endblock %}</title>
+
+  <link rel="stylesheet" href="/static/vendor/fonts.min.css?v=1" />
+  <link rel="stylesheet" href="/static/vendor/bootstrap-icons.min.css?v=1" />
+  <link rel="stylesheet" href="/static/bootstrap.min.css" />
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="stylesheet" href="/static/css/components.css?v=3" />
+  <link rel="stylesheet" href="/static/css/layouts/shared.css?v=1" />
+  <link rel="stylesheet" href="/static/css/layouts/public.css?v=3" />
+
+  <script src="/static/vendor/jquery.min.js?v=1"></script>
+  <script src="/static/vendor/popper.min.js?v=1"></script>
+  <script src="/static/vendor/bootstrap.min.js?v=1"></script>
+
+  {% block head %}{% endblock %}
 </head>
-<!-- Put some text on the page -->
-<body {{"class=home" if g and g.bg==1 else ""}}>
-	<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-		<symbol id="check-circle-fill" viewBox="0 0 16 16">
-			<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-		</symbol>
-		<symbol id="info-fill" viewBox="0 0 16 16">
-			<path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-		</symbol>
-		<symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
-			<path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-		</symbol>
-	</svg>
 
-	{% if 'headline' in g %}
-	<div class="alert alert-{{ g.headline.msg_type }} headline text-center" role="alert">
-		<svg class="bi flex-shrink-0 me-2" role="img" aria-label="Warning:"><use xlink:href="#{{ g.headline.icon }}"/></svg>
-		{{ g.headline.msg }}
-	</div>
-    {% endif %}
+<body {% if g and g.bg == 1 %}class="home"{% endif %}>
 
-	<div class="container-fluid">
-		<div class="navbar justify-content-end mb-5">
-			<ul class="nav">
-			  <li class="nav-item">
-			    <a class="nav-link active" href="/">Home</a>
-			  </li>
-			  {% if g and g.user %}
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">Books</a>
-					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="/books"><i class="bi bi-view-list"></i> View all</a>
-					<a class="dropdown-item" href="/books/me"><i class="bi bi-journal-plus"></i> My Book(s)</a>
-					</div>
-				</li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="/user/">Profile</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="/signout/">Signout</a>
-				  </li>
-			  {% else %}
-					<li class="nav-item">
-						<a class="nav-link" href="/books">Books</a>
-					</li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="/signin">Signin</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="/signup">Signup</a>
-				  </li>
-			  {% endif %}
-			</ul>
-		</div>
+  <!-- SVG symbol definitions for headline icons -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+    <symbol id="check-circle-fill" viewBox="0 0 16 16">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+    </symbol>
+    <symbol id="info-fill" viewBox="0 0 16 16">
+      <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+    </symbol>
+    <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+      <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+    </symbol>
+  </svg>
 
-		{%block content %}{% endblock %}
-	</div>
+  <!-- Headline / flash banner -->
+  {% if 'headline' in g %}
+    <div class="headline-banner headline-{{ g.headline.msg_type }}" role="alert">
+      <div class="headline-inner">
+        <svg class="headline-icon" role="img" aria-hidden="true">
+          <use xlink:href="#{{ g.headline.icon }}"/>
+        </svg>
+        <span>{{ g.headline.msg }}</span>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- ============================================
+       Navbar (glass, sticky)
+       ============================================ -->
+  <nav class="site-navbar">
+    <div class="site-navbar-inner">
+
+      <!-- Brand -->
+      <a href="/" class="site-brand">
+        <span class="site-brand-mark user-brand-mark"><i class="bi bi-book-half"></i></span>
+        <span class="site-brand-text">Library</span>
+      </a>
+
+      <!-- Menu -->
+      <ul class="site-nav-menu">
+
+        {% if session.get('admin') %}
+          <li>
+            <a href="/admin/" class="site-nav-link admin-dashboard-link">
+              <i class="bi bi-shield-lock-fill"></i>
+              <span class="nav-label">Admin Dashboard</span>
+            </a>
+          </li>
+        {% endif %}
+
+        <li>
+          <a href="/" class="site-nav-link {% if request.path == '/' %}is-active{% endif %}">
+            <i class="bi bi-house-door-fill"></i>
+            <span class="nav-label">Home</span>
+          </a>
+        </li>
+
+        {% if g and g.user %}
+          <li>
+            <a href="#" class="site-nav-link site-nav-toggle {% if '/books' in request.path %}is-active{% endif %}" data-toggle="dropdown"
+               role="button" aria-haspopup="true" aria-expanded="false">
+              <i class="bi bi-book-half"></i>
+              <span class="nav-label">Books</span>
+              <i class="bi bi-chevron-down site-nav-caret"></i>
+            </a>
+            <div class="dropdown-menu site-dropdown">
+              <a class="dropdown-item" href="/books">
+                <i class="bi bi-view-list"></i> View all
+              </a>
+              <a class="dropdown-item" href="/books/me">
+                <i class="bi bi-journal-bookmark-fill"></i> My Book(s)
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="/user/" class="site-nav-link {% if '/user' in request.path %}is-active{% endif %}">
+              <i class="bi bi-person-circle"></i>
+              <span class="nav-label">Profile</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/signout/" class="site-nav-link site-nav-signout">
+              <i class="bi bi-box-arrow-right"></i>
+              <span class="nav-label">Sign out</span>
+            </a>
+          </li>
+        {% else %}
+          <li>
+            <a href="/books/" class="site-nav-link {% if '/books' in request.path %}is-active{% endif %}">
+              <i class="bi bi-book-half"></i>
+              <span class="nav-label">Books</span>
+            </a>
+          </li>
+          <li>
+            <a href="/signin" class="site-nav-link {% if request.path == '/signin' %}is-active{% endif %}">
+              <i class="bi bi-box-arrow-in-right"></i>
+              <span class="nav-label">Sign in</span>
+            </a>
+          </li>
+          <li>
+            <a href="/signup" class="site-nav-link user-nav-cta {% if request.path == '/signup' %}is-active{% endif %}">
+              <i class="bi bi-person-plus-fill"></i>
+              <span class="nav-label">Sign up</span>
+            </a>
+          </li>
+        {% endif %}
+
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       Page content
+       ============================================ -->
+  <main class="container-fluid">
+    {% block content %}{% endblock %}
+  </main>
+
+
+
 </body>
 </html>

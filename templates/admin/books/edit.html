@@ -1,58 +1,36 @@
-{%extends "/shared/admin_layout.html" %}
+{% extends "/shared/admin_layout.html" %}
+{% from "/shared/partials/_book_macros.html" import book_form %}
 
-{% block title %}Manage Books - Edit {{book['name']}}{% endblock %}
+{% block title %}Manage Books - Edit {{ book['name'] }}{% endblock %}
 
 {% block head %}
-	{{ super() }}
-
-    <link rel="stylesheet" href="/static/home.css" />
+  {{ super() }}
+  <link rel="stylesheet" href="/static/home.css" />
 {% endblock %}
 
 {% block content %}
-	<div class="container">
-		<div class="back" style="font-size: 1.5em;position: absolute;">
-			<a href="javascript:history.back()"><i class="bi bi-arrow-left"></i></a>
-		</div>
-		<div class="d-flex justify-content-center">
-			<form action="/admin/books/edit/{{book['id']}}" method="POST" class="col-md-5 ">
-			<h2 style="display: inline-block;">Edit </h2> <h4 style="display: inline;"><b><i>"{{book['name']}}"</i></b></h4>
-			<div style="margin-top: 2em;" class="form-group">
-				<label for="title">Title</label>
-				<input type="text" name="title" class="form-control" value="{{book['name']}}" id="title" required  placeholder="Enter book title">
-				<small class="form-text text-muted">Members will be able to search using title!</small>
-			</div>
-			<div class="form-group">
-				<label for="author">Author</label>
-				<input type="text" name="author" class="form-control" id="author" value="{{book['author']}}" required  placeholder="E.g. Imam Al Bukhari">
-			</div>
-			<div class="form-group">
-				<label for="qty">Quantity</label>
-				<input type="number" name="qty" class="form-control" id="qty" value="{{book['count']}}" required  placeholder="E.g. 2">
-			</div>
-			<div class="form-group form-check">
-				<input type="checkbox" name="avaliable" value="{{book['availability']}}" {{'checked' if book['availability']==1 else''}} class="form-check-input" id="avaliable">
-				<label class="form-check-label" for="avaliable">Avaliable</label>
-				<small class="form-text text-muted">Book will not be shown to members if unchecked!</small>
-			</div>
-			
-			<div class="platforms mt-3 mb-3">
-				<label class="form-check-label" for="avaliable">Platforms</label>
-				<div style="font-size: 2.1em;">
-					<i class="bi bi-xbox" style="color: green;"></i>
-					<i class="bi bi-youtube ml-2" style="color: red;"></i>
-					<i class="bi bi-windows ml-2" style="color: rgb(39, 144, 185);"></i>
-					<i class="bi bi-github ml-2" style=""></i>
-				</div>
-			</div>
-			<div class="form-group">
-				<label for="desc">Description</label>
-				<textarea id="desc" name="desc" class="form-control">{{book['desc']}}</textarea>
-			</div>
-			
-			<div class="form-group">
-				<button type="submit" class="btn btn-primary">Update</button>
-			</div>
-			</form>
-		</div>
-	</div>
+  {{ book_form('/admin/books/edit/' ~ book['id'], 'bookEditForm', 'Edit Book', 'Update the details below. Changes are visible to members immediately.', 'Update Book', 'check-lg', true, book) }}
+
+  <script src="/static/js/image-uploader.js?v=1"></script>
+  <script>
+    window.ImageUploader({
+      dropzone: document.getElementById('dropzone'),
+      fileInput: document.getElementById('fileInput'),
+      previewGrid: document.getElementById('previewGrid'),
+      counter: document.getElementById('imgCounter'),
+      frontImageInput: document.getElementById('frontImageInput'),
+      removedInput: document.getElementById('removedImagesInput'),
+      hiddenFileInputs: document.getElementById('hiddenFileInputs'),
+      form: document.getElementById('bookEditForm'),
+      maxImages: 5,
+      maxSizeMB: 5,
+      name: 'images',
+      seeded: [{
+        type: 'existing',
+        id: {{ book['id']|tojson }},
+        url: {{ ('/static/images/books/cover-' ~ book['id'] ~ '.jpg')|tojson }},
+        front: true
+      }]
+    }).init();
+  </script>
 {% endblock %}

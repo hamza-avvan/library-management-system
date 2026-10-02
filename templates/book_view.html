@@ -1,104 +1,91 @@
-{%extends "/shared/layout.html" %}
+{% extends "/shared/layout.html" %}
+{% from "/shared/partials/_macros.html" import search_pill, empty_state %}
 
-{% block title %}Book - {{books['name']}} {% endblock %}
+{% block title %}Book - {{ books['name'] }}{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="/static/home.css" />
+
+  <link rel="stylesheet" href="/static/css/pages/book_view.css?v=1" />
+{% endblock %}
 
 {% block content %}
 
-<link rel="stylesheet" type="text/css" href="/static/plugins/slick-carousel/slick.css"/>
-<link rel="stylesheet" type="text/css" href="/static/plugins/slick-carousel/slick-theme.css"/>
 
-<div class="container">
-    <div style="width:100%; margin-top: 3em;margin-bottom: 2em;">
-        {% if msg %}
-            <div class="alert alert-success">{{msg}}</div>
-        {% endif %}
-        <form action="/books/search" method="GET">
-          <div class="form-group">
-            <div style="width: 100%">
-            <div style="width: 90%; display: inline-block;">
-            <input type="search" name="keyword" autofocus class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{keyword}}" placeholder="Search for books...">
-            </div>
-            <button type="submit" style="margin-left: 5px;vertical-align: top;" class="btn btn-primary">Search</button>
+<div class="container book-detail">
+
+  {% if msg %}
+    <div class="alert alert-success">
+      <i class="bi bi-check-circle-fill"></i> {{ msg }}
+    </div>
+  {% endif %}
+
+  {{ search_pill('/books/search', keyword, 'Search for books...', true, aria_label='Search for books') }}
+
+  {% if books %}
+    <div class="detail-card">
+      <div class="row g-4 g-lg-5">
+
+        <!-- LEFT — cover -->
+        <div class="col-lg-5">
+          <div class="gallery">
+            <div class="cover-wrapper">
+              <img src="/static/images/books/cover-{{ books['id'] }}.jpg"
+                   alt="{{ books['name'] }}">
             </div>
           </div>
-        </form>
+        </div>
+
+        <!-- RIGHT — details -->
+        <div class="col-lg-7">
+          <h1 class="book-name">{{ books['name'] }}</h1>
+
+          <div class="meta-pills">
+            {% if books['availability'] < 1 %}
+              <span class="pill pill-warning"><i class="bi bi-person-badge"></i> Assigned</span>
+            {% endif %}
+            {% if books['count'] < 1 %}
+              <span class="pill pill-secondary"><i class="bi bi-x-circle"></i> All reserved</span>
+            {% endif %}
+            {% if books['count'] > 0 %}
+              <span class="pill pill-success"><i class="bi bi-check-circle-fill"></i> Available</span>
+            {% endif %}
+          </div>
+
+          <p class="book-desc">{{ books['desc'] }}</p>
+
+          <div class="author-line">
+            <span class="label">Author</span>
+            <span class="value">{{ books['author'] if books['author'] != "" else "Anonymous" }}</span>
+          </div>
+
+          <a href="/books/add/{{ books['id'] }}"
+             class="btn-add {{ 'disabled' if (user_books != None and str(books['id']) in user_books) else '' }}"
+             {{ 'aria-disabled=true tabindex=-1' if (user_books != None and str(books['id']) in user_books) else '' }}>
+            {% if user_books != None and str(books['id']) in user_books %}
+              <i class="bi bi-check-circle-fill"></i> Added to My Books
+            {% else %}
+              <i class="bi bi-journal-plus"></i> Add to My Books
+            {% endif %}
+          </a>
+
+          <div class="platforms">
+            <span class="label">Available On</span>
+            <div class="platform-icons">
+              <i class="bi bi-xbox" style="color: #107c10;" title="Xbox"></i>
+              <i class="bi bi-youtube" style="color: #ff0000;" title="YouTube"></i>
+              <i class="bi bi-windows" style="color: #0078d4;" title="Windows"></i>
+              <i class="bi bi-github" style="color: #24292e;" title="GitHub"></i>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
+  {% else %}
+    {{ empty_state('bi-book', 'No Book Found!') }}
+  {% endif %}
 
-    {% if books %}
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card  book" style="width:100%">
-                        <div class="card-body">
-                            <div class="row">
-                            <div class="col-md-5">
-                                <img src="/static/images/books/cover-{{books['id']}}.jpg" style="margin: 0 auto; display: block;" class="card-img-top" alt="{{books[1]}}">
-
-                                
-                                <div class="slick-carousel" style="width: 360px; margin: 0 auto; display: block;">
-                                    <div><img src="/static/images/books/cover-{{books['id']}}.jpg"></div>
-                                    <div><img src="/static/images/books/cover-{{books['id']}}.jpg"></div>
-                                    <div><img src="/static/images/books/cover-{{books['id']}}.jpg"></div>
-                                    <div><img src="/static/images/books/cover-{{books['id']}}.jpg"></div>
-                                </div>
-
-                            </div>
-                            <div class="col-md-6">
-                                <h2>{{books['name']}}</h2>
-                                {% if books['availability'] < 1 %}
-                                <span class="badge badge-warning" style="margin-bottom: 5px;">Assigned</span>
-                                {% endif %}
-                                <p class="card-text">{{books['desc']}}</p>
-                                <p class="card-text font-weight-light"><b>Author:</b> {{books['author'] if books['author'] != "" else "Anonymous"}}</p>
-            
-                                {% if books['count'] < 1 %}
-                                <p class="card-text">
-                                        <span class="badge badge-secondary" style="margin-bottom: 5px;">All reserved</span>
-                                </p>
-                                {% endif %}
-
-                                <a href="/books/add/{{books['id']}}" class="btn btn-outline-warning mt-1  {{ 'disabled' if str(books['id']) in user_books else '' }}"><i class="bi bi-journal-plus"></i> {{ 'Added' if str(books['id']) in user_books else 'Add' }}</a>
-
-                                
-                                <div class="platforms mt-3">
-                                    <h4 class="font-weight-light" style="margin-bottom: 0;">Avaliable On</h4>
-                                    <div style="font-size: 2.1em;">
-                                        <i class="bi bi-xbox" style="color: green;"></i>
-                                        <i class="bi bi-youtube ml-2" style="color: red;"></i>
-                                        <i class="bi bi-windows ml-2" style="color: rgb(39, 144, 185);"></i>
-                                        <i class="bi bi-github ml-2" style=""></i>
-                                    </div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        {% else %}
-            <div class="card bwrapper">
-                <div class="card-body">
-                    <div class="text-center mb-4" style="
-                    margin-top: 21px !important;"><i class="text-center mt-4 bi-book" style="
-                        font-size: 6em; "></i></div>
-                    <p class="text-center mb-4">No Book Found!</p>
-                </div>
-            </div>
-        {% endif %}	
 </div>
-
-<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script type="text/javascript" src="/static/plugins/slick-carousel/slick.min.js"></script>
-<script type="text/javascript">
-  $(document).ready(function(){
-    $('.slick-carousel').slick({
-  infinite: false,
-  slidesToShow: 3,
-  initialSlide: 1,
-  arrows: true,
-});
-  });
-</script>
-
 {% endblock %}

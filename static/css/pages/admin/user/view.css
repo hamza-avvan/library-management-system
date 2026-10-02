@@ -1,0 +1,260 @@
+.user-profile {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #0b2b4a;
+  }
+
+  /* ---------- Flash ---------- */
+  .user-profile .flash {
+    background: #e3f5ec;
+    border: 1px solid #b3dfc9;
+    color: #0b5232;
+    border-radius: 1.25rem;
+    padding: 1rem 1.5rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ---------- Layout ---------- */
+  .user-profile .profile-grid {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  @media (max-width: 992px) {
+    
+  }
+
+  /* ---------- Left card (identity) ---------- */
+  
+  .user-profile .avatar-ring {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 1rem auto;
+    background: #eef3f8;
+    padding: 4px;
+    box-shadow: 0 0 0 4px #fff, 0 0 0 5px #dde8f2, 0 10px 25px -10px rgba(0, 30, 60, 0.25);
+    position: relative;
+    display: inline-block;
+  }
+  
+
+  
+  
+  
+
+  
+  
+  .user-profile .pill-locked {
+    background: #fde8e8;
+    color: #b02a2a;
+    border-color: #fccfcf;
+  }
+  
+  .user-profile .pill-unverified {
+    background: #fff3e0;
+    color: #b85c00;
+    border-color: #ffe0b5;
+  }
+  .user-profile .pill-admin {
+    background: #e9f2fa;
+    color: #1f4e7a;
+    border-color: #c9dff2;
+  }
+
+  
+
+  
+  
+  
+  
+  
+
+  /* ---------- Right card (tabs) ---------- */
+  
+
+  /* Tabs bar */
+  .user-profile .tabs-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.75rem 0.9rem 0 0.9rem;
+    border-bottom: 1px solid #edf2f7;
+    position: relative;
+    background: #fbfdff;
+  }
+  .user-profile .tab-btn {
+    background: transparent;
+    border: none;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #7b98b3;
+    cursor: pointer;
+    border-radius: 0.85rem 0.85rem 0 0;
+    transition: color 0.15s, background 0.15s;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    text-decoration: none;
+  }
+  
+  
+  
+  
+
+  .user-profile .share-link {
+    margin-left: auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1.5px solid #e0e9f2;
+    color: #5d7f9c;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    align-self: center;
+    margin-bottom: 0.5rem;
+  }
+  .user-profile .share-link:hover {
+    background: #f0f5fa;
+    border-color: #b8cfe4;
+    color: #0b2b4a;
+    transform: translateY(-2px);
+  }
+  .user-profile .share-link.copied {
+    background: #e3f5ec;
+    border-color: #b3dfc9;
+    color: #0e6b3e;
+  }
+
+  /* Panels */
+  .user-profile .tab-panel {
+    padding: 1.75rem 1.5rem 1.75rem 1.5rem;
+    display: none;
+    animation: fadeIn 0.25s ease;
+  }
+  
+  /* Panel heading */
+  
+  
+
+  /* ---------- Books list (Your Books tab) ---------- */
+  
+  
+  
+  .user-profile .book-cover {
+    width: 60px;
+    height: 84px;
+    border-radius: 0.6rem;
+    background-size: cover;
+    background-position: center;
+    background-color: #d9e5f0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    flex-shrink: 0;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+
+  /* ---------- Profile panel (Manage Account) ---------- */
+  
+  @media (max-width: 640px) {
+    
+  }
+  
+  
+  .user-profile .field label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #7b98b3;
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+  .user-profile .field .readonly {
+    border: 1.5px solid #e0e9f2;
+    border-radius: 0.8rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    color: #0b2b4a;
+    background: #f6f9fc;
+    min-height: 46px;
+    display: flex;
+    align-items: center;
+    word-break: break-word;
+  }
+  .user-profile .field .readonly.muted {
+    color: #8ba0b8;
+    font-style: italic;
+  }
+
+  .user-profile .danger-zone {
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #edf2f7;
+  }
+  .user-profile .danger-zone .dz-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #b02a2a;
+    margin: 0 0 0.75rem 0;
+    display: block;
+  }
+  .user-profile .danger-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .user-profile .btn-warn,
+  .user-profile .btn-danger-outline {
+    border-radius: 2rem;
+    padding: 0.75rem 1.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .user-profile .btn-warn {
+    border: 1.5px solid #ffe0b5;
+    color: #b85c00;
+  }
+  .user-profile .btn-warn:hover {
+    background: #fff3e0;
+    border-color: #f5c98a;
+  }
+  .user-profile .btn-danger-outline {
+    border: 1.5px solid #f6d5d5;
+    color: #b02a2a;
+  }
+  .user-profile .btn-danger-outline:hover {
+    background: #fde8e8;
+    border-color: #e49c9c;
+  }
+
+  /* ---------- Empty state (no books) ---------- */
+
+/* bump ?v=N in layout on change */

@@ -1,54 +1,29 @@
-{%extends "/shared/admin_layout.html" %}
+{% extends "/shared/admin_layout.html" %}
+{% from "/shared/partials/_book_macros.html" import book_form %}
 
 {% block title %}Manage Books - Add{% endblock %}
 
 {% block head %}
-	{{ super() }}
-
-    <link rel="stylesheet" href="/static/home.css" />
+  {{ super() }}
+  <link rel="stylesheet" href="/static/home.css" />
 {% endblock %}
 
 {% block content %}
-	<div class="container">
-		<div class="back" style="font-size: 1.5em;position: absolute;">
-			<a href="javascript:history.back()"><i class="bi bi-arrow-left"></i></a>
-		</div>
-		<div class="d-flex justify-content-center">
-			<form action="/books/add" method="GET" class="col-md-5 ">
-			<h3>Add Book</h3>
-			<div class="form-group">
-				<label for="title">Title</label>
-				<input type="text" name="title" class="form-control" id="title" required  placeholder="Enter book title">
-				<small class="form-text text-muted">Members will be able to search using title!</small>
-			</div>
-			<div class="form-group">
-				<label for="qty">Quantity</label>
-				<input type="number" name="qty" class="form-control" id="qty" required  placeholder="E.g 2">
-			</div>
-			<div class="form-group form-check">
-				<input type="checkbox" name="avaliable" class="form-check-input" id="avaliable" required >
-				<label class="form-check-label" for="avaliable">Avaliable</label>
-				<small class="form-text text-muted">Book will not be shown to members if unchecked!</small>
-			</div>
-			
-			<div class="platforms mt-3 mb-3">
-				<label class="form-check-label" for="avaliable">Platforms</label>
-				<div style="font-size: 2.1em;">
-					<i class="bi bi-xbox" style="color: green;"></i>
-					<i class="bi bi-youtube ml-2" style="color: red;"></i>
-					<i class="bi bi-windows ml-2" style="color: rgb(39, 144, 185);"></i>
-					<i class="bi bi-github ml-2" style=""></i>
-				</div>
-			</div>
-			<div class="form-group">
-				<label for="desc">Description</label>
-				<textarea id="desc" name="desc" class="form-control"></textarea>
-			</div>
-			
-			<div class="form-group col-12">
-				<button type="submit" class="btn btn-primary">Add</button>
-			</div>
-			</form>
-		</div>
-	</div>
+  {{ book_form('/books/add', 'bookAddForm', 'Add Book', 'Fill in the details below. You can add images, set the cover, and adjust availability.', 'Add Book', 'plus-lg') }}
+
+  <script src="/static/js/image-uploader.js?v=1"></script>
+  <script>
+    window.ImageUploader({
+      dropzone: document.getElementById('dropzone'),
+      fileInput: document.getElementById('fileInput'),
+      previewGrid: document.getElementById('previewGrid'),
+      counter: document.getElementById('imgCounter'),
+      frontImageInput: document.getElementById('frontImageInput'),
+      hiddenFileInputs: document.getElementById('hiddenFileInputs'),
+      form: document.getElementById('bookAddForm'),
+      maxImages: 5,
+      maxSizeMB: 5,
+      name: 'images'
+    }).init();
+  </script>
 {% endblock %}

@@ -1,152 +1,175 @@
-{%extends "/shared/layout.html" %}
+{% extends "/shared/layout.html" %}
+{% from "/shared/partials/_macros.html" import empty_state %}
 
-{% block title %}Profile - {{user['name']}} {% endblock %}
+{% block title %}Profile - {{ user['name'] }}{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="/static/css/pages/profile.css?v=2" />
+{% endblock %}
 
 {% block content %}
-	<div class="profile container">
-		{% with messages = get_flashed_messages() %}
-			{% if messages %}
-				<div class="alert alert-success">
-					{% for message in messages %}
-						<span>{{ message }}</span>
-					{% endfor %}
-				</div>
-			{% endif %}
-		{% endwith %}
-		<div class="">
 
-            <div class="card-body">
-                <div class="row d-flex justify-content-between">
-                    <div class="col-md-4 pt-4 card" style="height: fit-content;">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <div class="profile-pic-div m-auto">
-                                    <img src="https://api.dicebear.com/8.x/adventurer-neutral/png?size=100&seed={{user['name']}}&scale=110&radius=50&backgroundColor=763900,9e5622,ecad80,f2d3b1,d1d4f9,c0aede,b6e3f4,ffd5dc,ffdfbf&backgroundType=solid,gradientLinear" id="photo">
-                                    <!-- <input type="file" id="file">
-                                    <label for="file" id="uploadBtn" style="display: none;">Choose Photo</label> -->
-									<div class="text-center mt-4">{{user['name']}}</div>
-                                </div>
-                            </div>
-                            <hr>
-                            <p class="lead">
-                                {{user['bio']}}
-                            </p>
-							<hr/>
-							<p class="lead">Joined 🕒 {{ago(user['created_at'])}}</p>
-                        </div>
-                    </div>
-                    <div class="card col-md-7 mwrapper">
 
-						<ul class="nav nav-tabs" id="myTab" role="tablist">
-							<li class="nav-item">
-							  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Your Books</a>
-							</li>
-							<li class="nav-item">
-							  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
-							</li>
-						  </ul>
+<div class="container user-profile">
 
-						  <div class="col-md-12 ">
-							<div class="tab-content" id="myTabContent">
-								<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-								<div class="">
-									{% if books %}
-										<!-- <h2 class="text-center mt-4" style="margin-bottom: 0.5em;">Your Books</h2> -->
-										<h3 class="text-center mb-4 mt-4">📖 Your Book(s)</h3>
-										<div class="row m-1">
-											{% for book in books %}
-											<div class="card book col-md-12 p-0" style="position: relative; cursor: pointer;" onclick="window.location='/books/{{book['id']}}'">
-												<div style="float:left;height: 100%;background-position: left;background-size: cover;background-image: url(/static/images/books/cover-{{book['id']}}.jpg);width: 5em;" class="card-img-top" alt="{{book[1]}}"></div>
-												<div style="width:75%;margin-bottom: 0 !important;margin-top: 0 !important;margin-left: 8px !important;vertical-align: top;"  class="card-body p-0 pt-2 pb-2 m-2 mb-0 d-inline-block">
-				    								<h5 class="card-title m-0"><a href="/books/{{book['id']}}">{{book['name']}}</a></h5>
-													{% if book['availability'] < 1 %}
-														<span class="badge badge-warning" style="margin-bottom: 5px;">Assigned</span>
-													{% endif %}
-													<!-- <p class="card-text bookdesc">{{book['desc']}}</p> -->
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash">
+        <i class="bi bi-check-circle-fill"></i>
+        {% for message in messages %}<span>{{ message }}</span>{% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
 
-													<small class="card-text">Author: <span class="font-weight-light">{{book['author'] if book['author'] != "" else "Anonymous"}}</span></small>
+  <div class="profile-grid">
 
-													<a style="top: 0; right: 0; position: absolute;" href="#!"><i class="bi bi-box-arrow-up-right float-right m-3"></i></a>
-												</div>
-											</div>
-										{% endfor %}
-										</div>
-									{% else %}
-											<div class="card bwrapper">
-												<div class="card-body">
-													<h4 class="text-center mt-4">Manage Books</h4>
-													<div class="text-center mb-4" style="margin-top: 21px !important;">
-														<!-- <i class="text-center mt-4 bi-book" style="font-size: 6em; "></i> -->
-														<svg xmlns="http://www.w3.org/2000/svg" width="6em" height="6em" fill="currentColor" class="bi bi-activity" viewBox="0 0 16 16">
-														<path fill-rule="evenodd" d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z"/>
-														</svg>
-													</div>
-													<p class="text-center mb-4">No books reserved!</p>
-												</div>
-											</div>
-										{% endif %}	
-										</div>
-								</div>
-								<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-									<div class="card-body">
-										<h4 class="text-center mt-4">Manage Account</h4>
-										<p class="text-center mb-4">One Account For Everything</p>
+    <!-- ============================================
+         LEFT: identity card
+         ============================================ -->
+    <aside class="identity-card">
+      <div class="avatar-ring">
+        <img src="https://api.dicebear.com/8.x/adventurer-neutral/png?size=100&seed={{ user['name'] }}&scale=110&radius=50&backgroundColor=763900,9e5622,ecad80,f2d3b1,d1d4f9,c0aede,b6e3f4,ffd5dc,ffdfbf&backgroundType=solid,gradientLinear"
+             alt="{{ user['name'] }}">
+      </div>
 
-										<form method="POST" action="/user">
-											<div class="row">
-												<div class="col-sm-12">
-													<div class="form-group">
-														<label for="inputFirstName" class="form-label">Your Name</label>
-														<input type="text" placeholder="Enter Your Name" name="name" value="{{user['name']}}" class="form-control" id="inputFirstName">
-													</div>
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-sm-6">
-													<div class="form-group">
-													<label for="inputEmail3" class="form-label">Email</label>
-													<input type="email" placeholder="Email" value="{{user['email']}}" name="email" class="form-control" id="inputEmail3">
-													</div>
-												</div>
-												<div class="col-sm-6">
-														<div class="form-group">
-														<label for="password" class="form-label">Password</label>
-														<input type="password" placeholder="Password" class="form-control" id="password" name="password">
-													</div>
-												</div>
-											</div>
-											<div class="form-group">
-												<label for="inpBio" class="form-label">Bio</label>
-												<textarea class="form-control" rows="3" name="bio" id="inpBio">{{user['bio']}}</textarea>
-											</div>
-											<div class="form-group">
-												<button type="submit" class="btn btn-block btn-primary">Save Changes</button>
-											</div>
-										</form>	
-									</div>
-								</div>
-							</div>
-						  </div>
+      <h1 class="identity-name">{{ user['name'] }}</h1>
+      <p class="identity-email">
+        <i class="bi bi-envelope-fill"></i> {{ user['email'] }}
+      </p>
 
-                    </div>
+      <div class="identity-badges">
+        <span class="pill pill-books">
+          <i class="bi bi-book-half"></i> Books: {{ books|length if books else 0 }}
+        </span>
+      </div>
 
+      <hr class="identity-divider">
+
+      <div class="identity-section" style="margin-bottom:1rem;">
+        <span class="label">Bio</span>
+        <p class="bio {{ 'muted' if not user['bio'] else '' }}">
+          {{ user['bio'] if user['bio'] else "You haven't written a bio yet." }}
+        </p>
+      </div>
+
+      <div class="identity-section">
+        <span class="label">Joined</span>
+        <p class="meta-line">
+          <i class="bi bi-clock-history"></i> {{ ago(user['created_at']) }}
+        </p>
+      </div>
+    </aside>
+
+    <!-- ============================================
+         RIGHT: tabs card
+         ============================================ -->
+    <section class="content-card">
+
+      <!-- Tabs bar -->
+      <div class="tabs-bar" role="tablist">
+        <button type="button" class="tab-btn active" data-tab="books" role="tab" aria-selected="true">
+          <i class="bi bi-book-half"></i> Your Books
+        </button>
+        <button type="button" class="tab-btn" data-tab="profile" role="tab" aria-selected="false">
+          <i class="bi bi-person-gear"></i> Profile
+        </button>
+      </div>
+
+      <!-- ============================================
+           TAB 1 — Your Books
+           ============================================ -->
+      <div class="tab-panel active" id="panel-books" role="tabpanel">
+        {% if books %}
+          <h3 class="panel-title"><i class="bi bi-collection"></i> Your Book(s)</h3>
+          <p class="panel-sub">{{ books|length }} book{% if books|length != 1 %}s{% endif %} in your collection</p>
+
+          <div class="books-list">
+            {% for book in books %}
+              <a href="/books/{{ book['id'] }}" class="book-row">
+                <div class="book-cover"
+                     style="background-image: url(/static/images/books/cover-{{ book['id'] }}.jpg);"
+                     aria-hidden="true"></div>
+
+                <div class="book-info">
+                  <h4 class="book-title">{{ book['name'] }}</h4>
+                  <p class="book-author">
+                    <strong>Author:</strong> {{ book['author'] if book['author'] != "" else "Anonymous" }}
+                  </p>
                 </div>
-            </form>
-        </div>
-	</div>
 
-	<script>
-		var hash;
-		$(".nav-tabs a").on("click", function() {
-			hash = $(this).attr('aria-controls');
-			window.location.hash = hash;
-		})
-	
-		hash = window.location.hash;
-	
-		if (hash=='#profile') {
-			$(".nav-tabs a").toggleClass('active').toggleClass('show');
-			$(".tab-pane").toggleClass('active').toggleClass('show');
-		}
-	</script>
+                <div class="book-side">
+                  {% if book['availability'] < 1 %}
+                    <span class="book-assigned">Assigned</span>
+                  {% endif %}
+                  <i class="bi bi-box-arrow-up-right book-open"></i>
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ empty_state('bi-book', 'No books reserved yet', class_name='empty-books', hint='Books you add will show up here.') }}
+        {% endif %}
+      </div>
+
+      <!-- ============================================
+           TAB 2 — Profile / Manage Account
+           ============================================ -->
+      <div class="tab-panel" id="panel-profile" role="tabpanel">
+        <h3 class="panel-title"><i class="bi bi-person-gear"></i> Manage Account</h3>
+        <p class="panel-sub">One account for everything. Update your details below.</p>
+
+        <form method="POST" action="/user">
+          <div class="field-grid">
+            <div class="field full">
+              <label for="inputFirstName">Your Name</label>
+              <input type="text" placeholder="Enter Your Name" name="name"
+                     value="{{ user['name'] }}" class="form-control" id="inputFirstName">
+            </div>
+
+            <div class="field">
+              <label for="inputEmail3">Email</label>
+              <input type="email" placeholder="Email" value="{{ user['email'] }}"
+                     name="email" class="form-control" id="inputEmail3">
+            </div>
+
+            <div class="field">
+              <label for="password">Password</label>
+              <input type="password" placeholder="New password (leave blank to keep current)"
+                     class="form-control" id="password" name="password">
+            </div>
+
+            <div class="field full">
+              <label for="inpBio">Bio</label>
+              <textarea class="form-control" rows="3" name="bio" id="inpBio"
+                        placeholder="Tell us about yourself...">{{ user['bio'] }}</textarea>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-save">
+              <i class="bi bi-check-lg"></i> Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </section>
+  </div>
+</div>
+
+<script src="/static/js/tabs.js?v=1"></script>
+<script>
+  const tabRoot = document.querySelector('.user-profile');
+  window.ProfileTabs({
+    root: tabRoot,
+    buttons: tabRoot.querySelectorAll('.tab-btn'),
+    panelForTab: {
+      books: tabRoot.querySelector('#panel-books'),
+      profile: tabRoot.querySelector('#panel-profile')
+    },
+    validTabs: ['books', 'profile']
+  }).init();
+</script>
 {% endblock %}

@@ -1,27 +1,74 @@
-{%extends "/shared/admin_layout.html" %}
+{% extends "/shared/admin_layout.html" %}
+{% from "/shared/partials/_macros.html" import search_pill %}
 
 {% block title %}Admin Home{% endblock %}
 
 {% block head %}
-	{{ super() }}
+  {{ super() }}
+  <link rel="stylesheet" href="/static/home.css" />
 
-    <link rel="stylesheet" href="/static/home.css" />
+  <link rel="stylesheet" href="/static/css/pages/admin/home.css?v=1" />
 {% endblock %}
 
 {% block content %}
-	<div class="container d-flex h-75">
-	    <div class="row justify-content-center align-self-center welcome">
-	    	<h3>WELCOME</h3>
-			<div style="width:100%">
-			<form action="/admin/books/search" method="GET">
-			  <div class="form-group">
-			    <label for="exampleInputEmail1">Search</label>
-			    <input type="search" name="keyword" autofocus class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search for books...">
-			    <small id="emailHelp" class="form-text text-muted">Available books will be shown to members.</small>
-			  </div>
-			  <button type="submit" class="btn btn-primary">Search</button>
-			</form>
-			</div>
-	    </div>
-	</div>
+
+
+<div class="admin-home">
+  <div class="admin-card">
+
+    <!-- Icon -->
+    <div class="admin-icon">
+      <i class="bi bi-shield-lock-fill"></i>
+    </div>
+
+    <!-- Admin role pill -->
+    <span class="admin-role-pill">
+      <i class="bi bi-key-fill"></i> Admin Console
+    </span>
+
+    <!-- Heading -->
+    <h1 class="admin-title">Welcome back</h1>
+    <p class="admin-sub">
+      Manage the library's books, users, and reservations. Start by searching the catalog or jump to a section below.
+    </p>
+
+    <!-- Search -->
+    <div class="admin-search">
+      {{ search_pill(
+        '/admin/books/search', placeholder='Search books to manage...',
+        autofocus=true, input_id='exampleInputEmail1', aria_label='',
+        form_class='', button_class='btn-search', button_icon='bi-search',
+        button_label_span=true, form_wraps_search=true, autocomplete='off',
+        describedby='emailHelp',
+        help_text='Results are shown in the admin book management view.',
+        help_id='emailHelp', help_icon='bi-info-circle'
+      ) }}
+    </div>
+
+    <!-- Quick actions -->
+    <div class="admin-actions">
+      <p class="admin-actions-title">Quick Access</p>
+      <div class="admin-actions-grid">
+
+        <a href="/admin/books" class="admin-action">
+          <span class="action-icon"><i class="bi bi-journal-bookmark-fill"></i></span>
+          <span class="action-text">
+            <span class="action-label">Manage Books</span>
+            <span class="action-hint">Edit, add, remove titles</span>
+          </span>
+        </a>
+
+        <a href="/admin/users" class="admin-action">
+          <span class="action-icon"><i class="bi bi-people-fill"></i></span>
+          <span class="action-text">
+            <span class="action-label">Manage Users</span>
+            <span class="action-hint">View, disable, delete accounts</span>
+          </span>
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+</div>
 {% endblock %}

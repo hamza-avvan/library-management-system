@@ -1,24 +1,54 @@
 # Library Management System
 A simple flask app to manage users along with mysql service now with [docker support](https://github.com/hamza-avvan/library-management-system?tab=readme-ov-file#getting-started-with-docker).
 
-![Libray Management App - Flask](https://github.com/hamzaavvan/library-management-system/blob/master/ss/ss2.JPG?raw=true)
+![Library Management App - Flask](docs/screenshots/ss2.JPG)
 
 **Youtube Tutorial Walkthrough:** [https://www.youtube.com/watch?v=As90fkeMkyA](https://www.youtube.com/watch?v=As90fkeMkyA)
 
 
 ## Installation
 
-To run the app flawlessly, satisfy the requirements
-```bash
-pip install -r requirements.txt
+Use Python 3.14 and install the dependencies.
+
+On Windows (PowerShell):
+```powershell
+py -3.14 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
 ```
+
+On macOS or Linux:
+```bash
+python3.14 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
+## Project structure
+
+Application code lives in the lowercase `app` package, organized around the MVC roles:
+
+- `models/` contains only the actor and book classes.
+- `database/` contains the database connection, DAOs, and query repositories.
+- `managers/` contains the existing application-level `*Manager` classes.
+- `controllers/` contains only the Flask request handlers.
+- `extensions/` initializes the Flask mail and scheduler extensions.
+- `utils/` contains shared helpers.
+- `tasks/` contains background task entry points.
+
+HTML templates are the views and remain in the root `templates/` directory;
+static assets remain in `static/`. Project screenshots are kept in
+`docs/screenshots/`.
 
 ## Set Environment Variables
 Replace `.env.example` with `.env` file and update the environment vaiables.
+Set `SECRET_KEY` to a unique random value before starting the app. For example, generate one with:
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(32))"
+```
 
 ```bash
-FLASK_APP=app.py
-FLASK_ENV=development
+FLASK_APP=app
 FLASK_DEBUG=True
 
 # DB info

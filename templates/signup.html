@@ -1,48 +1,83 @@
-{%extends "/shared/layout.html" %}
+{% extends "/shared/layout.html" %}
+{% from "/shared/partials/_macros.html" import auth_header, form_field %}
 
-{% block title %}Signup{% endblock %}
+{% block title %}Sign up{% endblock %}
 
 {% block head %}
-	{{ super() }}
-
-    <link rel="stylesheet" href="/static/home.css" />
+  {{ super() }}
+  <link rel="stylesheet" href="/static/home.css" />
 {% endblock %}
 
 {% block content %}
-	<div class="container d-flex h-75">
-	    <div class="row justify-content-center align-self-center welcome">
-			<h4>SIGNUP</h4>
+<div class="auth-page">
+  <div class="auth-card auth-card--signup">
 
-			<div style="width:90%">
-			{% if msg %}
-				<div class="alert alert-success">
-					{{msg|safe}}
-				</div>
-			{% endif %}
-			{% if error %}
-				<div class="alert alert-danger">
-					{{error}}
-				</div>
-			{% endif %}
-			<form action="/signup" method="POST">
-			  <div class="form-group">
-			    <label for="name">Name</label>
-			    <input type="text" class="form-control" id="name" name="name" aria-describedby="name" placeholder="Your name">
-			  </div>
-			  <div class="form-group">
-			    <label for="email">Email address</label>
-			    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email address">
-			    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-			  </div>
-			  <div class="form-group">
-			    <label for="password">Password</label>
-			    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-			  </div>
+    {{ auth_header('bi-person-plus-fill', 'Create your account', 'Join the library to browse, reserve, and manage your books.') }}
 
-			  <button type="submit" class="btn btn-primary">Signup</button>
-			  	<!-- <a style="margin-left: 10px" href="/signup">Or join us now!</a> -->
-			</form>
-			</div>
-	    </div>
-	</div>
+    <!-- Success / info message -->
+    {% if msg %}
+      <div class="auth-alert auth-alert--success">
+        <i class="bi bi-check-circle-fill"></i>
+        <span>{{ msg|safe }}</span>
+      </div>
+    {% endif %}
+
+    <!-- Error -->
+    {% if error %}
+      <div class="auth-alert auth-alert--danger">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span>{{ error }}</span>
+      </div>
+    {% endif %}
+
+    <!-- Form -->
+    <form action="/signup" method="POST">
+
+      {{ form_field(
+          'Name',
+          'name',
+          id='name',
+          label_for='name',
+          describedby='name',
+          placeholder='Your name'
+      ) }}
+
+      {{ form_field(
+          'Email address',
+          'email',
+          input_type='email',
+          id='email',
+          label_for='email',
+          describedby='emailHelp',
+          placeholder='Enter email address',
+          help_text="We'll never share your email with anyone else.",
+          help_id='emailHelp'
+      ) }}
+
+      {{ form_field(
+          'Password',
+          'password',
+          input_type='password',
+          id='password',
+          label_for='password',
+          placeholder='Password'
+      ) }}
+
+      <div class="auth-actions">
+        <a href="/signin" class="auth-link">Already have an account? Sign in</a>
+      </div>
+
+      <button type="submit" class="auth-submit">
+        <i class="bi bi-person-plus-fill"></i>
+        Create account
+      </button>
+
+    </form>
+
+    <p class="auth-terms">
+      By creating an account you agree to treat other members with respect and return borrowed books on time.
+    </p>
+
+  </div>
+</div>
 {% endblock %}

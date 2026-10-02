@@ -1,53 +1,74 @@
-{%extends "/shared/layout.html" %}
+{% extends "/shared/layout.html" %}
+{% from "/shared/partials/_macros.html" import auth_header, form_field %}
 
-{% block title %}Signin{% endblock %}
+{% block title %}Sign in{% endblock %}
 
 {% block head %}
-	{{ super() }}
-
-    <link rel="stylesheet" href="/static/home.css" />
+  {{ super() }}
+  <link rel="stylesheet" href="/static/home.css" />
 {% endblock %}
 
 {% block content %}
-	<div class="container d-flex h-75">
-	    <div class="row justify-content-center align-self-center welcome">
-			<h4>SIGNIN</h4>
+<div class="auth-page">
+  <div class="auth-card">
 
-			<div style="width:90%">
-			{% if error %}
-				<div class="alert alert-danger">
-					{{error}}
-				</div>
-			{% endif %}
-			
-			{% with messages = get_flashed_messages() %}
-				{% if messages %}
-					<div class="alert alert-success">
-						{% for message in messages %}
-							<span>{{ message }}</span>
-						{% endfor %}
-					</div>
-				{% endif %}
-			{% endwith %}
-			<form action="/signin" method="POST">
-			  <div class="form-group">
-			    <label for="exampleInputEmail1">Email address</label>
-			    <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-			    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-			  </div>
-			  <div class="form-group">
-			    <label for="exampleInputPassword1">Password</label>
-			    <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
-			  </div>
+    {{ auth_header('bi-box-arrow-in-right', 'Welcome back', 'Sign in to continue to your library.') }}
 
-			  <div class="form-group">
-			  	<a href="/signup">Join us now!</a>
-			  </div>
+    <!-- Error -->
+    {% if error %}
+      <div class="auth-alert auth-alert--danger">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span>{{ error }}</span>
+      </div>
+    {% endif %}
 
-			  <button type="submit" class="btn btn-primary">Signin</button>
-			  	<!-- <a style="margin-left: 10px" href="/signup">Or join us now!</a> -->
-			</form>
-			</div>
-	    </div>
-	</div>
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="auth-alert auth-alert--success">
+          <i class="bi bi-check-circle-fill"></i>
+          <span>
+            {% for message in messages %}{{ message }}{% if not loop.last %}<br>{% endif %}{% endfor %}
+          </span>
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Form -->
+    <form action="/signin" method="POST">
+
+      {{ form_field(
+          'Email address',
+          'email',
+          input_type='email',
+          id='exampleInputEmail1',
+          label_for='exampleInputEmail1',
+          describedby='emailHelp',
+          placeholder='Enter email',
+          help_text="We'll never share your email with anyone else.",
+          help_id='emailHelp'
+      ) }}
+
+      {{ form_field(
+          'Password',
+          'password',
+          input_type='password',
+          id='exampleInputPassword1',
+          label_for='exampleInputPassword1',
+          placeholder='Password'
+      ) }}
+
+      <div class="auth-actions">
+        <a href="/signup" class="auth-link">Join us now →</a>
+      </div>
+
+      <button type="submit" class="auth-submit">
+        <i class="bi bi-box-arrow-in-right"></i>
+        Sign in
+      </button>
+
+    </form>
+
+  </div>
+</div>
 {% endblock %}

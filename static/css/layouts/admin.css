@@ -1,0 +1,53 @@
+.admin-brand-mark { font-size: 0.95rem; }
+
+.admin-nav-quick {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: 0.75rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1f4e7a;
+  background: #fff;
+  border: 1.5px solid #cfe0f0;
+  text-decoration: none;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+  margin-right: 0.4rem;
+}
+.admin-nav-quick i {
+  font-size: 0.95rem;
+  color: #3b7cbf;
+  transition: color 0.15s, transform 0.15s;
+}
+.admin-nav-quick:hover {
+  background: #e9f2fa;
+  border-color: #8db5db;
+  color: #0b2b4a;
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px -8px rgba(59, 124, 191, 0.4);
+}
+.admin-nav-quick:hover i {
+  color: #1f4e7a;
+  transform: translate(1px, -1px);
+}
+
+@media (max-width: 768px) {
+  .admin-nav-quick {
+    padding: 0.45rem 0.75rem;
+    font-size: 0.82rem;
+  }
+}
+@media (max-width: 560px) {
+  .admin-nav-quick .nav-label { display: none; }
+  .admin-nav-quick {
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    justify-content: center;
+    margin-right: 0.1rem;
+  }
+}
