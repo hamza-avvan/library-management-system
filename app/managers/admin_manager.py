@@ -3,7 +3,6 @@ from app.models.admin import Admin
 class AdminManager():
 	def __init__(self, DAO):
 		self.admin = Admin(DAO.db.admin)
-		self.user = DAO.db.user
 		self.dao = self.admin.dao
 
 	def signin(self, email, password):
@@ -23,14 +22,5 @@ class AdminManager():
 
 		return admin
 		
-	def getUsersList(self):
-		admin = self.user.list()
-		print(admin)
-
-		return admin
-
 	def signout(self):
 		self.admin.signout()
-
-	def user_list(self):
-		return self.user.list()

@@ -14,6 +14,7 @@ from threading import Thread
 from flask_mail import Mail
 
 from app.managers.user_manager import UserManager
+from app.managers.reservation_manager import ReservationManager
 
 services = get_services()
 DAO = services.dao
@@ -23,6 +24,7 @@ Scheduler = services.scheduler
 user_view = Blueprint('user_routes', __name__)
 
 user_manager = UserManager(DAO)
+reservation_manager = ReservationManager(DAO)
 
 # Middleware
 @user_view.before_request
@@ -184,7 +186,7 @@ def show_user(id=None):
 	if id is None:
 		id = int(user_manager.user.id)
 
-	mybooks = user_manager.getBooksList(id)
+	mybooks = reservation_manager.get_books_for_user(id)
 
 	return render_template("profile.html", user=user_manager.user, books=mybooks, g=g)
 

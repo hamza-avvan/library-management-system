@@ -51,13 +51,6 @@ class UserDAO():
 
 		return user
 
-	def getUsersByBook(self, book_id):
-		q = self.db.query("select * from @table LEFT JOIN reserve ON reserve.user_id = @table.id WHERE reserve.book_id={}".format(book_id))
-
-		user = q.fetchall()
-
-		return user
-
 	def getByEmail(self, email):
 		q = self.db.query("select * from @table where email='{}'".format(email))
 

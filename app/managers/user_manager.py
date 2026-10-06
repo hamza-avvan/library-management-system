@@ -3,7 +3,6 @@ from app.models.user import User
 class UserManager():
 	def __init__(self, DAO):
 		self.user = User(DAO.db.user)
-		self.book = DAO.db.book
 
 	def list(self):
 		user_list = self.user.dao.list()
@@ -87,9 +86,3 @@ class UserManager():
 		user = self.update_freely(user_info, id)
 
 		return user
-
-	def getBooksList(self, id):
-		return self.book.getBooksByUser(id)
-
-	def getUsersByBook(self, book_id):
-		return self.user.dao.getUsersByBook(book_id)

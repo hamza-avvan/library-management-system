@@ -5,12 +5,14 @@ from app.utils.functions import create_headline
 
 from app.managers.user_manager import UserManager
 from app.managers.book_manager import BookManager
+from app.managers.reservation_manager import ReservationManager
 
 DAO = get_services().dao
 
 book_view = Blueprint('book_routes', __name__)
 
 book_manager = BookManager(DAO)
+reservation_manager = ReservationManager(DAO)
 user_manager = UserManager(DAO)
 
 
@@ -29,7 +31,7 @@ def home(id):
 
 	user_books = []
 	if user_manager.user.isLoggedIn():
-		reserved_books = book_manager.getReserverdBooksByUser(user_id=user_manager.user.uid())
+		reserved_books = reservation_manager.get_reserved_books_by_user(user_manager.user.uid())
 		user_books = (reserved_books.get('user_books', '') or '').split(',') if reserved_books.get('user_books', '') else []
 
 	if id is not None:
@@ -50,9 +52,9 @@ def mybooks():
 	user_manager.user.set_session(session, g)
 
 	user_books = []
-	reserved_books = book_manager.getReserverdBooksByUser(user_id=user_manager.user.uid())
+	reserved_books = reservation_manager.get_reserved_books_by_user(user_manager.user.uid())
 	user_books = (reserved_books.get('user_books', '') or '').split(',') if reserved_books.get('user_books', '') is not None else []
-	b = book_manager.getUserBooks(user_manager.user.uid())
+	b = reservation_manager.get_books_for_user(user_manager.user.uid())
 
 	if not b:
 		return render_template('books.html', error="No book(s) found!", view='mybooks')
@@ -64,14 +66,14 @@ def mybooks():
 def add(id):
 	user_id = user_manager.user.uid()
 
-	reserved_books = book_manager.getReserverdBooksByUser(user_id=user_manager.user.uid())
+	reserved_books = reservation_manager.get_reserved_books_by_user(user_manager.user.uid())
 	reserved_books = (reserved_books.get('user_books', '') or '').split(',') if reserved_books else []
 	
 	b = book_manager.list()
 	if id in reserved_books:
 		return render_template("books.html", error="Book already reserved", books=b, g=g, user_books=reserved_books)
 		
-	book_manager.reserve(user_id, id)
+	reservation_manager.reserve_for_user(user_id, id)
 	user_manager.user.set_session(session, g)
 	
 	return render_template("books.html", msg="Book reserved", books=b, g=g, user_books=reserved_books)
@@ -81,7 +83,7 @@ def add(id):
 def search():
 	user_manager.user.set_session(session, g)
 	
-	reserved_books = book_manager.getReserverdBooksByUser(user_id=user_manager.user.uid())
+	reserved_books = reservation_manager.get_reserved_books_by_user(user_manager.user.uid())
 	reserved_books = (reserved_books.get('user_books', '') or '').split(',') if reserved_books else []
 
 	if "keyword" not in request.args:

@@ -5,6 +5,7 @@ from app.utils.functions import ago, hash
 
 from app.managers.admin_manager import AdminManager
 from app.managers.book_manager import BookManager
+from app.managers.reservation_manager import ReservationManager
 from app.managers.user_manager import UserManager
 
 DAO = get_services().dao
@@ -17,6 +18,7 @@ admin_view = Blueprint(
 )
 
 book_manager = BookManager(DAO)
+reservation_manager = ReservationManager(DAO)
 user_manager = UserManager(DAO)
 admin_manager = AdminManager(DAO)
 
@@ -116,7 +118,7 @@ def view_user(uid):
 	id = int(admin_manager.admin.uid())
 	admin = admin_manager.get(id)
 	user = user_manager.get(uid)
-	user_books = user_manager.getBooksList(uid)
+	user_books = reservation_manager.get_books_for_user(uid)
 
 	return render_template('user/view.html', g=g, books=user_books, user=user, admin=admin)
 
@@ -139,7 +141,7 @@ def view_book(id):
 
 	if id != None:
 		b = book_manager.getBook(id)
-		users = user_manager.getUsersByBook(id)
+		users = reservation_manager.get_borrowers_for_book(id)
 
 		if b and len(b) <1:
 			return render_template('books/book_view.html', error="No book found!")
@@ -182,6 +184,7 @@ def book_delete(id):
 
 
 @admin_view.route('/books/search', methods=['GET'])
+@admin_manager.admin.login_required
 def search():
 	admin_manager.admin.set_session(session, g)
 
