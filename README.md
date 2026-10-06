@@ -1,70 +1,163 @@
 # Library Management System
-A simple flask app to manage users along with mysql service now with [docker support](https://github.com/hamza-avvan/library-management-system?tab=readme-ov-file#getting-started-with-docker).
 
-![Library Management App - Flask](docs/screenshots/ss2.JPG)
+![Release version](https://img.shields.io/badge/release-v2.0-blue)
 
-**Youtube Tutorial Walkthrough:** [https://www.youtube.com/watch?v=As90fkeMkyA](https://www.youtube.com/watch?v=As90fkeMkyA)
+Library Management System is a Flask application for managing a library's
+books, members, and reservations, backed by MySQL.
 
+![Library Management System v2.0](docs/screenshots/v2.0.png)
 
-## Installation
+## Release v2.0
 
-Use Python 3.14 and install the dependencies.
+Version 2.0 updates the application for Python 3.14 and Flask 3.1, reorganizes
+the Flask code into MVC-focused packages, and redesigns and deduplicates the
+site's templates and frontend assets.
 
-On Windows (PowerShell):
-```powershell
-py -3.14 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
+- Pins the Flask, Werkzeug, database, mail, and scheduler dependencies in
+  `requirements.txt`. Flask routes import `escape` from MarkupSafe for
+  compatibility with current Flask releases.
+- Updates the Docker image to Python 3.14 and configures the Flask application
+  package as the entry point.
+- Organizes application code under `app/`: models, database access, managers,
+  controllers, extensions, utilities, and background tasks.
+- Extracts repeated Jinja markup, page styles, profile tabs, and book-image
+  uploader behavior into reusable macros, stylesheets, and JavaScript modules.
+- Self-hosts frontend libraries and fonts as separate local assets, avoiding
+  runtime CSS and JavaScript requests to third-party CDNs.
+- Adds a public-navbar shortcut to the admin dashboard for active admin
+  sessions.
+- Keeps project screenshots in `docs/screenshots/`.
+
+## Requirements
+
+- Python 3.14
+- MySQL 8.x for a local installation, or Docker with Docker Compose
+
+## Run locally on Windows
+
+Creating a virtual environment is recommended, but optional. If you want one,
+create and activate it using the commands for your shell:
+
+### Command Prompt (CMD)
+
+```bat
+python -m venv .venv
+.venv\Scripts\activate.bat
 ```
 
-On macOS or Linux:
+### PowerShell
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+To install directly into your current Python environment instead, skip the
+virtual-environment commands above. Install the dependencies and create your
+environment file using your shell:
+
+**CMD**
+
+```bat
+python -m pip install -r requirements.txt
+copy .env.example .env
+```
+
+**PowerShell**
+
+```powershell
+python -m pip install -r requirements.txt
+Copy-Item .env.example .env
+```
+
+### Linux
+
 ```bash
-python3.14 -m venv .venv
+python -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
+cp .env.example .env
 ```
 
-## Project structure
+Edit `.env` and set a unique `SECRET_KEY` and your MySQL connection settings.
+Generate a secret key with:
 
-Application code lives in the lowercase `app` package, organized around the MVC roles:
-
-- `models/` contains only the actor and book classes.
-- `database/` contains the database connection, DAOs, and query repositories.
-- `managers/` contains the existing application-level `*Manager` classes.
-- `controllers/` contains only the Flask request handlers.
-- `extensions/` initializes the Flask mail and scheduler extensions.
-- `utils/` contains shared helpers.
-- `tasks/` contains background task entry points.
-
-HTML templates are the views and remain in the root `templates/` directory;
-static assets remain in `static/`. Project screenshots are kept in
-`docs/screenshots/`.
-
-## Set Environment Variables
-Replace `.env.example` with `.env` file and update the environment vaiables.
-Set `SECRET_KEY` to a unique random value before starting the app. For example, generate one with:
 ```bash
 python -c "import secrets; print(secrets.token_urlsafe(32))"
 ```
 
-```bash
-FLASK_APP=app
-FLASK_DEBUG=True
+Make sure MySQL is running, and create and initialize the database. On Windows
+CMD:
 
-# DB info
-MYSQL_HOST=localhost
-MYSQL_USER=root
-MYSQL_PASSWORD=
-MYSQL_DB=lms
+```bat
+mysql -u root -p -e "CREATE DATABASE lms;"
+mysql -u root -p lms < db\lms.sql
 ```
 
-**Note:** If you update the `MYSQL_DB` variable, remember to also update the corresponding value in the [docker-compose.yaml](https://github.com/hamza-avvan/library-management-system/blob/master/docker-compose.yaml#L12) file to ensure consistency when using Docker. There's an exceptioin for `MYSQL_HOST` which should set set within [docker-compose.yaml](https://github.com/hamza-avvan/library-management-system/blob/master/docker-compose.yaml#L29) file explicitly.
+On Linux:
 
-To setup a mail server you can set the below variable in `.env` file. 
 ```bash
-# SMTP credentials
+mysql -u root -p -e "CREATE DATABASE lms;"
+mysql -u root -p lms < db/lms.sql
+```
+
+Set `MYSQL_HOST`, `MYSQL_USER`, `MYSQL_PASSWORD`, and `MYSQL_DB` in `.env` to
+match your MySQL installation. The default database name is `lms`.
+
+Start the development server:
+
+**CMD**
+
+```bat
+python -m flask --app app run
+```
+
+**PowerShell**
+
+```powershell
+python -m flask --app app run
+```
+
+**Linux**
+
+```bash
+python -m flask --app app run
+```
+
+Open <http://127.0.0.1:5000/> in your browser. To enable the Flask debugger
+and automatic reload during local development, run:
+
+```bash
+python -m flask --app app run --debug
+```
+
+Flask's CLI loads variables from the project's `.env` file. Alternatively,
+set `FLASK_APP=app` in the environment and run `python -m flask run`.
+
+## Run with Docker Compose
+
+Create `.env` from `.env.example`, set `SECRET_KEY`, and provide any needed
+application settings. Docker Compose configures `MYSQL_HOST` as the `mysql`
+service and initializes a new MySQL data volume from `db/lms.sql`.
+
+Build and start the application:
+
+```powershell
+docker compose up --build
+```
+
+The application is available at <http://localhost:5000/>. To stop the
+containers, press `Ctrl+C`; to stop and remove the containers, run
+`docker compose down`. The named MySQL data volume is retained by default.
+
+## Email configuration
+
+Email delivery is configured through the optional SMTP variables in `.env`:
+
+```dotenv
+ENABLE_MAILER=True
 MAIL_SERVER=smtp.gmail.com
-MAIL_PORT=587 
+MAIL_PORT=587
 MAIL_USERNAME=
 MAIL_PASSWORD=
 MAIL_USE_TLS=True
@@ -73,47 +166,26 @@ MAIL_DEBUG=1
 MAIL_DEFAULT_SENDER=sender@domain.com
 ```
 
-I'm using Flask-Mail for managing emails. For more information, visit [https://flask-mail.readthedocs.io/en/latest/](https://flask-mail.readthedocs.io/en/latest/)
+Configure these values for your SMTP provider before using email-dependent
+features. The application uses
+[Flask-Mail](https://flask-mail.readthedocs.io/en/latest/).
 
+## Project structure
 
-## Setup Datbase
-Export `lms.sql` database from within [db](https://github.com/hamza-avvan/library-management-system/tree/master/db) directory using Phpmyadmin or terminal:
-
-```bash
-mysql -u <username> -p <password> lms < lms.sql
-```
-
-## Start Server
-```bash
-flask run
-```
-
-Or run this command 
-```bash
-python -m flask run
-```
-
-### Debugging
-
-Start flask with auto reload on code change
-```bash
-flask run --reload
-```
----------------------
-
-# Getting Started with Docker
-With this update, you can now easily get an out-of-the-box support for a Docker environment. There's no need to set up a mysql service, import databases, or run multiple commands. 
-
-Create an `.env` file as described in the [Set Environment Variables](https://github.com/hamza-avvan/library-management-system?tab=readme-ov-file#set-environment-variables) section, then execute the `docker-compose` command. This will automate the entire setup process for you.
-
-Build & start the app:
-```bash
-docker-compose up --build
-```
-
-**OR**
-
-Start app (without building):
-```bash
-docker-compose up
+```text
+app/
+  controllers/   Flask route handlers
+  database/      MySQL connection, DAOs, and repositories
+  extensions/    Flask-Mail and APScheduler setup
+  managers/      Application service/manager classes
+  models/        Actor, admin, book, and user models
+  tasks/         Background task entry points
+  utils/         Shared helpers
+templates/       Jinja templates and shared partials/macros
+static/
+  css/           Shared layout, component, and page styles
+  js/            Reusable page behavior
+  vendor/        Locally hosted third-party CSS, JS, and fonts
+db/              MySQL initialization script
+docs/screenshots/Project screenshots
 ```
