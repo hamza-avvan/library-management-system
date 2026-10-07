@@ -1,19 +1,19 @@
 class BookManager():
-	def __init__(self, DAO):
-		self.dao = DAO.db.book
+	def __init__(self, dao):
+		self.book = dao.book
 
 	def list(self, availability=1):
-		return self.dao.list(availability)
+		return self.book.list(availability)
 
 	def getBook(self, id):
-		books = self.dao.getBook(id)
+		books = self.book.get_by_id(id)
 
 		return books
 
 	def search(self, keyword, availability=1):
-		books = self.dao.search_book(keyword, availability)
+		books = self.book.search(keyword, availability)
 
 		return books
 
 	def delete(self, id):
-		self.dao.delete(id)
+		self.book.delete(id)

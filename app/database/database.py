@@ -1,4 +1,4 @@
-import os, json
+import os
 from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
 class DB(object):
@@ -7,7 +7,6 @@ class DB(object):
 	user = os.environ.get('MYSQL_USER') or "root"
 	password = os.environ.get('MYSQL_PASSWORD') or ""
 	db = os.environ.get('MYSQL_DB') or "lms"
-	table = ""
 
 	def __init__(self, app):
 		app.config["MYSQL_DATABASE_HOST"] = self.host;
@@ -21,18 +20,11 @@ class DB(object):
 		# except:
 		# 	print("Error")
 	
-	def escape_quotes(self, string):
-		return json.dumps(string)
-
 	def cur(self):
 		return self.mysql.get_db().cursor()
 
 	def query(self, q, params=None):
 		h = self.cur()
-	
-		if (len(self.table)>0):
-			q = q.replace("@table", self.table)
-
 		h.execute(q, params)
 
 		return h

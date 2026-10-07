@@ -9,13 +9,13 @@ from app.extensions.mailer import Mailer
 from app.extensions.scheduler import Scheduler
 from app.database.dao import DAO
 
-Scheduler = Scheduler(app)
-DAO = DAO(app)
+scheduler = Scheduler(app)
+dao = DAO(app)
 mailer = Mailer(app)
 
 from app.dependencies import configure_services
 
-configure_services(DAO, mailer, Scheduler)
+configure_services(dao, mailer, scheduler)
 
 from app.controllers.admin import admin_view
 from app.controllers.book import book_view

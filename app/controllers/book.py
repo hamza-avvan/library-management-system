@@ -27,11 +27,11 @@ def before_request():
 @book_view.route('/books/', defaults={'id': None})
 @book_view.route('/books/<int:id>')
 def home(id):
-	user_manager.user.set_session(session, g)
+	user_manager.auth.set_session(session, g)
 
 	user_books = []
-	if user_manager.user.isLoggedIn():
-		reserved_books = reservation_manager.get_reserved_books_by_user(user_manager.user.uid())
+	if user_manager.auth.isLoggedIn():
+		reserved_books = reservation_manager.get_reserved_books_by_user(user_manager.auth.uid())
 		user_books = (reserved_books.get('user_books', '') or '').split(',') if reserved_books.get('user_books', '') else []
 
 	if id is not None:
@@ -47,14 +47,14 @@ def home(id):
 	return render_template(template, books=b, g=g, count=len(b), user_books=user_books)
 
 @book_view.route('/books/me')
-@user_manager.user.login_required
+@user_manager.auth.login_required
 def mybooks():
-	user_manager.user.set_session(session, g)
+	user_manager.auth.set_session(session, g)
 
 	user_books = []
-	reserved_books = reservation_manager.get_reserved_books_by_user(user_manager.user.uid())
+	reserved_books = reservation_manager.get_reserved_books_by_user(user_manager.auth.uid())
 	user_books = (reserved_books.get('user_books', '') or '').split(',') if reserved_books.get('user_books', '') is not None else []
-	b = reservation_manager.get_books_for_user(user_manager.user.uid())
+	b = reservation_manager.get_books_for_user(user_manager.auth.uid())
 
 	if not b:
 		return render_template('books.html', error="No book(s) found!", view='mybooks')
@@ -62,11 +62,11 @@ def mybooks():
 	return render_template('books.html', books=b, g=g, user_books=user_books, count=len(user_books), view='mybooks')
 
 @book_view.route('/books/add/<id>', methods=['GET'])
-@user_manager.user.login_required
+@user_manager.auth.login_required
 def add(id):
-	user_id = user_manager.user.uid()
+	user_id = user_manager.auth.uid()
 
-	reserved_books = reservation_manager.get_reserved_books_by_user(user_manager.user.uid())
+	reserved_books = reservation_manager.get_reserved_books_by_user(user_manager.auth.uid())
 	reserved_books = (reserved_books.get('user_books', '') or '').split(',') if reserved_books else []
 	
 	b = book_manager.list()
@@ -74,16 +74,16 @@ def add(id):
 		return render_template("books.html", error="Book already reserved", books=b, g=g, user_books=reserved_books)
 		
 	reservation_manager.reserve_for_user(user_id, id)
-	user_manager.user.set_session(session, g)
+	user_manager.auth.set_session(session, g)
 	
 	return render_template("books.html", msg="Book reserved", books=b, g=g, user_books=reserved_books)
 
 
 @book_view.route('/books/search', methods=['GET'])
 def search():
-	user_manager.user.set_session(session, g)
+	user_manager.auth.set_session(session, g)
 	
-	reserved_books = reservation_manager.get_reserved_books_by_user(user_manager.user.uid())
+	reserved_books = reservation_manager.get_reserved_books_by_user(user_manager.auth.uid())
 	reserved_books = (reserved_books.get('user_books', '') or '').split(',') if reserved_books else []
 
 	if "keyword" not in request.args:

@@ -38,7 +38,7 @@ def before_request():
 def home():
 	g.bg = 1
 
-	user_manager.user.set_session(session, g)
+	user_manager.auth.set_session(session, g)
 
 	return render_template('home.html', g=g)
 
@@ -82,7 +82,7 @@ def validateFlag(token):
 	return render_template('flag/view.html', token=token,failed=failed, msg=plaintext)
 
 @user_view.route('/signin', methods=['GET', 'POST'])
-@user_manager.user.redirect_if_login
+@user_manager.auth.redirect_if_login
 def signin():
 	if request.method == 'POST':
 		_form = request.form
@@ -114,7 +114,7 @@ def signin():
 
 
 @user_view.route('/signup', methods=['GET', 'POST'])
-@user_manager.user.redirect_if_login
+@user_manager.auth.redirect_if_login
 def signup():
 	if request.method == 'POST':
 		name = request.form.get('name')
@@ -153,13 +153,13 @@ def signup():
 
 
 @user_view.route('/signout/', methods=['GET'])
-@user_manager.user.login_required
+@user_manager.auth.login_required
 def signout():
 	user_manager.signout()
 
 	resp = make_response(redirect("/", code=302))
 
-	if user_manager.user.email =="bugbounty09x@gmail.com":
+	if user_manager.auth.email =="bugbounty09x@gmail.com":
 		user_manager.deleteUserByEmail("bugbounty09x@gmail.com")
 		resp.delete_cookie('headline')
 
@@ -179,21 +179,21 @@ def signout():
 	# 	print("[+] Deleted")
 
 @user_view.route('/user/', methods=['GET'])
-@user_manager.user.login_required
+@user_manager.auth.login_required
 def show_user(id=None):
-	user_manager.user.set_session(session, g)
+	user_manager.auth.set_session(session, g)
 	
 	if id is None:
-		id = int(user_manager.user.id)
+		id = int(user_manager.auth.id)
 
 	mybooks = reservation_manager.get_books_for_user(id)
 
-	return render_template("profile.html", user=user_manager.user, books=mybooks, g=g)
+	return render_template("profile.html", user=user_manager.auth, books=mybooks, g=g)
 
 @user_view.route('/user', methods=['POST'])
-@user_manager.user.login_required
+@user_manager.auth.login_required
 def update():
-	user_manager.user.set_session(session, g)
+	user_manager.auth.set_session(session, g)
 	
 	_form = request.form
 	name = str(_form["name"])
@@ -201,7 +201,7 @@ def update():
 	password = str(_form["password"])
 	bio = str(_form["bio"])
 
-	user_manager.update(name, email, hash(password), bio, user_manager.user.id)
+	user_manager.update(name, email, hash(password), bio, user_manager.auth.id)
 
 	flash('Your info has been updated!')
 	return redirect("/user/")

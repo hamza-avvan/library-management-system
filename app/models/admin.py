@@ -1,10 +1,15 @@
-from app.models.actor import Actor
+class Admin:
+	def __init__(self, db):
+		self.db = db
 
-class Admin(Actor):
-	common_properties = ['name', 'email', 'id', 'created_at']
-	specific_properties = []
+	def get_by_id(self, admin_id):
+		return self.db.query(
+			"SELECT * FROM admin WHERE id = %s",
+			(admin_id,),
+		).fetchone()
 
-	def __init__(self, AdminDAO):
-		self.sess_key = "admin"
-		self.dao = AdminDAO
-		self.route_url = "/admin/"
+	def get_by_email(self, email):
+		return self.db.query(
+			"SELECT * FROM admin WHERE email = %s",
+			(email,),
+		).fetchone()

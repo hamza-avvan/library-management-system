@@ -24,15 +24,15 @@ admin_manager = AdminManager(DAO)
 
 
 @admin_view.route('/', methods=['GET'])
-@admin_manager.admin.login_required
+@admin_manager.auth.login_required
 def home():
-	admin_manager.admin.set_session(session, g)
+	admin_manager.auth.set_session(session, g)
 
 	return render_template('admin/home.html', g=g)
 
 
 @admin_view.route('/signin/', methods=['GET', 'POST'])
-@admin_manager.admin.redirect_if_login
+@admin_manager.auth.redirect_if_login
 def signin():
 	g.bg = 1
 	
@@ -57,7 +57,7 @@ def signin():
 
 
 @admin_view.route('/signout/', methods=['GET'])
-@admin_manager.admin.login_required
+@admin_manager.auth.login_required
 def signout():
 	admin_manager.signout()
 
@@ -65,20 +65,20 @@ def signout():
 
 
 @admin_view.route('/users/view/', methods=['GET'])
-@admin_manager.admin.login_required
+@admin_manager.auth.login_required
 def users_view():
-	admin_manager.admin.set_session(session, g)
+	admin_manager.auth.set_session(session, g)
 
-	id = int(admin_manager.admin.uid())
+	id = int(admin_manager.auth.uid())
 	admin = admin_manager.get(id)
 	# myusers = admin_manager.getUsersList()
 
 	return render_template('user/index.html', g=g, admin=admin)
 
 @admin_view.route('/users/search', methods=['GET'])
-@admin_manager.admin.login_required
+@admin_manager.auth.login_required
 def search_users():
-	admin_manager.admin.set_session(session, g)
+	admin_manager.auth.set_session(session, g)
 
 	query = request.args.get('q', '').strip()
 	page = max(request.args.get('page', 1, type=int), 1)
@@ -111,11 +111,11 @@ def search_users():
 	})
 
 @admin_view.route('/users/view/<int:uid>', methods=['GET'])
-@admin_manager.admin.login_required
+@admin_manager.auth.login_required
 def view_user(uid):
-	admin_manager.admin.set_session(session, g)
+	admin_manager.auth.set_session(session, g)
 
-	id = int(admin_manager.admin.uid())
+	id = int(admin_manager.auth.uid())
 	admin = admin_manager.get(id)
 	user = user_manager.get(uid)
 	user_books = reservation_manager.get_books_for_user(uid)
@@ -124,20 +124,20 @@ def view_user(uid):
 
 
 @admin_view.route('/books/', methods=['GET'])
-@admin_manager.admin.login_required
+@admin_manager.auth.login_required
 def books():
-	admin_manager.admin.set_session(session, g)
+	admin_manager.auth.set_session(session, g)
 
-	id = int(admin_manager.admin.uid())
+	id = int(admin_manager.auth.uid())
 	admin = admin_manager.get(id)
 	mybooks = book_manager.list(availability=0)
 
 	return render_template('books/views.html', g=g, books=mybooks, admin=admin)
 
 @admin_view.route('/books/<int:id>')
-@admin_manager.admin.login_required
+@admin_manager.auth.login_required
 def view_book(id):
-	admin_manager.admin.set_session(session, g)
+	admin_manager.auth.set_session(session, g)
 
 	if id != None:
 		b = book_manager.getBook(id)
@@ -150,17 +150,17 @@ def view_book(id):
 
 
 @admin_view.route('/books/add', methods=['GET', 'POST'])
-@admin_manager.admin.login_required
+@admin_manager.auth.login_required
 def book_add():
-	admin_manager.admin.set_session(session, g)
+	admin_manager.auth.set_session(session, g)
 	
 	return render_template('books/add.html', g=g)
 
 
 @admin_view.route('/books/edit/<int:id>', methods=['GET', 'POST'])
-@admin_manager.admin.login_required
+@admin_manager.auth.login_required
 def book_edit(id):
-	admin_manager.admin.set_session(session, g)
+	admin_manager.auth.set_session(session, g)
 
 	if id != None:
 		b = book_manager.getBook(id)
@@ -173,7 +173,7 @@ def book_edit(id):
 	return redirect('/books')
 
 @admin_view.route('/books/delete/<int:id>', methods=['GET'])
-@admin_manager.admin.login_required
+@admin_manager.auth.login_required
 def book_delete(id):
 	id = int(id)
 
@@ -184,9 +184,9 @@ def book_delete(id):
 
 
 @admin_view.route('/books/search', methods=['GET'])
-@admin_manager.admin.login_required
+@admin_manager.auth.login_required
 def search():
-	admin_manager.admin.set_session(session, g)
+	admin_manager.auth.set_session(session, g)
 
 	if "keyword" not in request.args:
 		return render_template("books/view.html")
@@ -196,7 +196,7 @@ def search():
 	if len(keyword)<1:
 		return redirect('/admin/books')
 
-	id = int(admin_manager.admin.uid())
+	id = int(admin_manager.auth.uid())
 	admin = admin_manager.get(id)
 
 	d=book_manager.search(keyword, 0)

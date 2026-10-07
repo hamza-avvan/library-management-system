@@ -1,7 +1,6 @@
-class ReservationDAO:
-	def __init__(self, DAO):
-		self.db = DAO
-		self.db.table = "reserve"
+class Reservation:
+	def __init__(self, db):
+		self.db = db
 
 	def reserve(self, user_id, book_id):
 		try:
@@ -14,7 +13,7 @@ class ReservationDAO:
 				return "err_out"
 
 			self.db.query(
-				"INSERT INTO @table (user_id, book_id) VALUES (%s, %s)",
+				"INSERT INTO reserve (user_id, book_id) VALUES (%s, %s)",
 				(user_id, book_id),
 			)
 			self.db.commit()
@@ -26,28 +25,28 @@ class ReservationDAO:
 	def get_books_by_user(self, user_id):
 		return self.db.query(
 			"SELECT books.* FROM books "
-			"INNER JOIN @table ON @table.book_id = books.id "
-			"WHERE @table.user_id = %s",
+			"INNER JOIN reserve ON reserve.book_id = books.id "
+			"WHERE reserve.user_id = %s",
 			(user_id,),
 		).fetchall()
 
 	def get_books_count_by_user(self, user_id):
 		return self.db.query(
-			"SELECT COUNT(book_id) AS books_count FROM @table WHERE user_id = %s",
+			"SELECT COUNT(book_id) AS books_count FROM reserve WHERE user_id = %s",
 			(user_id,),
 		).fetchone()
 
 	def get_reserved_books_by_user(self, user_id):
 		return self.db.query(
 			"SELECT GROUP_CONCAT(book_id SEPARATOR ',') AS user_books "
-			"FROM @table WHERE user_id = %s",
+			"FROM reserve WHERE user_id = %s",
 			(user_id,),
 		).fetchone()
 
 	def get_users_by_book(self, book_id):
 		return self.db.query(
 			"SELECT users.* FROM users "
-			"INNER JOIN @table ON @table.user_id = users.id "
-			"WHERE @table.book_id = %s",
+			"INNER JOIN reserve ON reserve.user_id = users.id "
+			"WHERE reserve.book_id = %s",
 			(book_id,),
 		).fetchall()
